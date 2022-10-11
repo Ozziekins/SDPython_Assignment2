@@ -4,6 +4,8 @@ from Model.EdInstitution import EdInstitution
 from datetime import datetime
 
 if __name__ == '__main__':
+# [1, 2, 3]
+# list(map(func(el -> a), list)) [1, 2, 3] -> [funct(1), func(2), func(3)]
 
     a = EdInstitution("Innopolis University")
     b = Klassroom("Innopolis University", "404", 140, True)

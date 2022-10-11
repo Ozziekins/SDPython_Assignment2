@@ -44,12 +44,12 @@ class Room:
         return len(self._activities)
 
     def add_activity(self, activity: Activity):
-        overlapping = list(map(lambda x: activity.not_overlaps(x), self._activities))
+        not_overlapping = list(map(lambda x: activity.not_overlaps(x), self._activities))
         # print(all(overlapping))
         # print(overlapping)
-        if not all(overlapping):
+        if not all(not_overlapping):
             # Getting list of overlapping activities
-            ov = [str(act) for i, act in enumerate(self._activities) if not overlapping[i]]
+            ov = [str(act) for i, act in enumerate(self._activities) if not not_overlapping[i]]
             # Raising an exception
             raise ActivitiesOverlapException('Activity conflicts with the following activities:\n' + '\n'.join(ov))
         else:
@@ -69,7 +69,7 @@ class Room:
 class LectureAuditorium(Room):
 
     def __str__(self):
-        return f'Lecture Auditorium ' + super(LectureAuditorium, self).__str__()
+        return f'Lecture Auditorium ' + super().__str__()
 
 
 class Klassroom(Room):
