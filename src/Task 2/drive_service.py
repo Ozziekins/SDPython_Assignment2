@@ -5,6 +5,16 @@ from auth_decorator import auth_decorator
 
 @auth_decorator
 def get_file_id(creds, file_name):
+    """
+    The service for getting the id of the file
+    in a folder with a particular file_name
+    :param creds: The credentials passed from the authenticator
+    :param file_name: The file whose id is needed.
+    :return: None: if no file exists with that file name,
+             String:  The id of the file if the file exists
+    Raises an exception if more than one file exists with
+     that name.
+    """
     folder_id = '1nfrYxDm7TLzls9pedZbLX5rP4McVDWDe'
 
     def list_files():

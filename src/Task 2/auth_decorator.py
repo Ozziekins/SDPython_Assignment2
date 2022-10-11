@@ -6,6 +6,14 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 
 
 def auth_decorator(func):
+    """
+    The decorator helps to fetch authentication
+    credentials and pass it to the function it's
+    decorating
+    :param func: The function to be guarded
+    :return: the result of  the funciton
+    """
+
     scopes = ['https://www.googleapis.com/auth/drive.metadata.readonly',
               'https://www.googleapis.com/auth/drive.readonly']
 

@@ -1,10 +1,10 @@
 from datetime import datetime
 import time
-from TimedDownload import Simulator
+from Files import Files
 import pandas as pd
 
 start_date = datetime(2022, 9, 2)
-sim = Simulator(start_date)
+sim = Files(start_date)
 
 for file_id in sim:
     time.sleep(60)
