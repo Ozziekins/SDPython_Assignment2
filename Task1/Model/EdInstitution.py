@@ -1,5 +1,5 @@
-from Model.Room import Klassroom
-from Model.Room import LectureAuditorium
+from Task1.Model.Room import Klassroom
+from Task1.Model.Room import LectureAuditorium
 
 
 class EdInstitution:

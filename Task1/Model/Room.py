@@ -1,5 +1,5 @@
-from Model.Activity import Activity
-from Exceptions import ActivitiesOverlapException
+from Task1.Model.Activity import Activity
+from Task1.Exceptions import ActivitiesOverlapException
 
 
 class Room:

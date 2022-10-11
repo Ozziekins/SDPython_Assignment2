@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     b.add_activity(act)
     b.add_activity(act2)
-    b.add_activity(act3)
+    # b.add_activity(act3)
 
     # print(b)
 
@@ -26,6 +26,7 @@ if __name__ == '__main__':
     print(a)
 
     institutions = [EdInstitution("Innopolis University"), EdInstitution("KFU")]
+    print(institutions[0])
 
     message = 'Choose one operation from below :' \
               ' 1 : Add classroom or Auditorium to institution' \
@@ -36,6 +37,5 @@ if __name__ == '__main__':
     #
     # while True:
     #     print(message)
-
 
 

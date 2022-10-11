@@ -40,10 +40,9 @@ class AddAuditorium(ConsoleAction):
             print(repr(error))
 
 
-class AddActivityKlassRoom(ConsoleAction):
-
-class AddActivityAuditorium(ConsoleAction):
-
+# class AddActivityKlassRoom(ConsoleAction):
+#
+# class AddActivityAuditorium(ConsoleAction):
 
 class PrintSummary(ConsoleAction):
     def execute(self, institutions):
