@@ -24,7 +24,8 @@ class AddAuditorium(ConsoleAction):
             if not args:
                 raise ValueError
 
-            capacity, number, air_conditioner = int(args.group(1)), args.group(2), True if args.group(3) == 'yes' else False
+            capacity, number, air_conditioner = int(args.group(1)), args.group(2), True if args.group(
+                3) == 'yes' else False
 
             if choice == 1:
                 k_room = Klassroom(inst.get_name(), number, capacity, air_conditioner)
@@ -42,6 +43,13 @@ class AddAuditorium(ConsoleAction):
 # class AddActivityKlassRoom(ConsoleAction):
 #
 # class AddActivityAuditorium(ConsoleAction):
+
+class SaveToFile(ConsoleAction):
+    def execute(self, institutions):
+        for i in institutions:
+            i.save_to_file()
+        print('Successfully saved!')
+
 
 class PrintSummary(ConsoleAction):
     def execute(self, institutions):

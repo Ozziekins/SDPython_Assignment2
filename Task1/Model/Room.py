@@ -1,5 +1,5 @@
 from Task1.Model.Activity import Activity
-from Task1.Exceptions import ActivitiesOverlapException
+from Task1.Exceptions import ActivitiesOverlapException, ActivityOutOfRangeException
 from datetime import datetime
 
 
@@ -39,8 +39,11 @@ class Room:
         return list(filter(lambda x: other.overlaps(x), self._activities))
 
     def is_available(self):
-        act = Activity("", datetime.now(), datetime.now())
-        return len(self._overlapping(act)) == 0
+        try:
+            act = Activity("", "", datetime.now(), datetime.now())
+            return len(self._overlapping(act)) == 0
+        except ActivityOutOfRangeException:
+            return False
 
     def num_activities(self):
         return len(self._activities)
@@ -56,6 +59,10 @@ class Room:
             raise ActivitiesOverlapException('Activity conflicts with the following activities:\n' + '\n'.join(ov))
         else:
             self._activities.append(activity)
+
+    def dump(self):
+        acts = str([a.dump() for a in self._activities])
+        return f'(edu_name:{self._edu_name}, number: {self._number}, capacity: {self._capacity}, air_cond: {self._air_cond}, activities: {acts})'
 
     def __str__(self):
         return f'{self._number}.\n' \

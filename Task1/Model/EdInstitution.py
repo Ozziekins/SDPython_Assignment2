@@ -61,6 +61,12 @@ class EdInstitution:
         """
         self._auditoriums = self._remove(number, self._auditoriums)
 
+    def save_to_file(self):
+        classrooms = str([i.dump() for i in self._klassrooms])
+        auditoriums = str([i.dump() for i in self._klassrooms])
+        with open(f'{self._name}.txt', 'w') as f:
+            f.write(f'EdInstitution(name: {self._name}, classrooms: {classrooms}, auditoriums: {auditoriums})')
+
     def __str__(self):
         return f'{self._name}' + \
                f'\n\tclassroom(s) : {len(self._klassrooms)}' + \
