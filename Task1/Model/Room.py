@@ -10,12 +10,6 @@ class Room:
         self._air_cond = air_cond
         self._activities = []
 
-    def get_name(self):
-        return self._name
-
-    def set_name(self, name: str):
-        self._name = name
-
     def get_edu_name(self):
         return self._edu_name
 
