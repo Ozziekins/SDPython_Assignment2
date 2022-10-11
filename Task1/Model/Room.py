@@ -63,7 +63,7 @@ class Room:
                f' Number of activities: {self.num_activities()}'
 
     def __hash__(self):
-        return self._number
+        return int(self._number)
 
 
 class LectureAuditorium(Room):

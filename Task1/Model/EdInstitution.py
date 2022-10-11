@@ -56,4 +56,4 @@ class EdInstitution:
     def __str__(self):
         klasses = '' if not self._klassrooms else 'Klassrooms:\n\n' + '\n'.join([str(kl) for kl in self._klassrooms])
         audits = '' if not self._auditoriums else 'LectureAuditoriums:\n\n' + '\n'.join([str(au) for au in self._auditoriums])
-        return f'University - {self.name}\n' + klasses + '\n' + audits
+        return f'University - {self._name}\n' + klasses + '\n' + audits

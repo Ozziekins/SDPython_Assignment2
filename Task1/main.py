@@ -23,10 +23,7 @@ if __name__ == '__main__':
 
     a.add_kroom(b)
 
-    print(a)
-
     institutions = [EdInstitution("Innopolis University"), EdInstitution("KFU")]
-    print(institutions[0])
 
     message = 'Choose one operation from below :' \
               ' 1 : Add classroom or Auditorium to institution' \
@@ -37,5 +34,4 @@ if __name__ == '__main__':
     #
     # while True:
     #     print(message)
-
 
