@@ -20,12 +20,11 @@ class AddAuditorium(ConsoleAction):
             choice = int(input())
             print("Enter (capacity, number, air conditioner- yes/no):")
             # TODO: add a fine regexp here
-            args = re.findall(input(), "%s* %i* %s")
-            if args:
+            args = re.search("([1-9][0-9]+) ([0-9]+) (yes|no)", input())
+            if not args:
                 raise ValueError
 
-            args = args[0]
-            capacity, number, air_conditioner = int(args[0]), args[1], True if args[2] == 'yes' else False
+            capacity, number, air_conditioner = int(args.group(1)), args.group(2), True if args.group(3) == 'yes' else False
 
             if choice == 1:
                 k_room = Klassroom(inst.get_name(), number, capacity, air_conditioner)

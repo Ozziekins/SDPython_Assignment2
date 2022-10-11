@@ -7,7 +7,7 @@ def get_institution(institutions: list) -> EdInstitution:
 
     inst = None
     for i in institutions:
-        if i.name == name:
+        if i.get_name() == name:
             inst = i
 
     if inst:

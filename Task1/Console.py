@@ -11,6 +11,7 @@ class Console:
         self.actions = actions
 
     def choose_action(self):
+        print(self._message)
         try:
             choice = int(input())
             self.actions[choice].execute(self._institutions)
