@@ -1,5 +1,6 @@
 from Task1.Model.Activity import Activity
 from Task1.Exceptions import ActivitiesOverlapException
+from datetime import datetime
 
 
 class Room:
@@ -34,16 +35,23 @@ class Room:
     def is_conditioned(self):
         return 'Yes' if self._air_cond else 'No'
 
+    def _overlapping(self, other):
+        return list(filter(lambda x: other.overlaps(x), self._activities))
+
+    def is_available(self):
+        act = Activity("", datetime.now(), datetime.now())
+        return len(self._overlapping(act)) == 0
+
     def num_activities(self):
         return len(self._activities)
 
     def add_activity(self, activity: Activity):
-        not_overlapping = list(map(lambda x: activity.not_overlaps(x), self._activities))
+        overlapping = self._overlapping(activity)
         # print(all(overlapping))
         # print(overlapping)
-        if not all(not_overlapping):
+        if len(overlapping) != 0:
             # Getting list of overlapping activities
-            ov = [str(act) for i, act in enumerate(self._activities) if not not_overlapping[i]]
+            ov = [str(act) for act in overlapping]
             # Raising an exception
             raise ActivitiesOverlapException('Activity conflicts with the following activities:\n' + '\n'.join(ov))
         else:

@@ -37,6 +37,14 @@ class EdInstitution:
 
         return rooms
 
+    def _available_krooms(self):
+        available = list(filter(lambda x: x.is_available(), self._klassrooms))
+        return len(available)
+
+    def _available_auds(self):
+        available = list(filter(lambda x: x.is_available(), self._auditoriums))
+        return len(available)
+
     def remove_kroom(self, number: str):
         """
         Removes a KlassRoom from the set of Klassrooms, using auditorium number.
@@ -54,6 +62,7 @@ class EdInstitution:
         self._auditoriums = self._remove(number, self._auditoriums)
 
     def __str__(self):
-        klasses = '' if not self._klassrooms else 'Klassrooms:\n\n' + '\n'.join([str(kl) for kl in self._klassrooms])
-        audits = '' if not self._auditoriums else 'LectureAuditoriums:\n\n' + '\n'.join([str(au) for au in self._auditoriums])
-        return f'University - {self._name}\n' + klasses + '\n' + audits
+        return f'{self._name}' + \
+               f'\n\tclassroom(s) : {len(self._klassrooms)}' + \
+               f'\n\tAuditorium(s): {len(self._auditoriums)}' + \
+               f'\n\tStatus for today (now) : {self._available_krooms()} available classroom(s) and {self._available_auds()} '

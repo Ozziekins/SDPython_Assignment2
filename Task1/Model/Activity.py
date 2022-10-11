@@ -20,8 +20,8 @@ class Activity:
     def get_end(self):
         return self._end
 
-    def not_overlaps(self, other):
-        return False if self._start < other.get_end() and self._end > other.get_start() else True
+    def overlaps(self, other):
+        return self._start < other.get_end() and self._end > other.get_start()
 
     def __str__(self):
         return f'Activity(name: {self._name}, start: {self._start}, end: {self._end})'

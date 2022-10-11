@@ -24,6 +24,7 @@ if __name__ == '__main__':
     # print(b)
 
     a.add_kroom(b)
+    print(a)
 
     institutions = [EdInstitution("Innopolis University"), EdInstitution("KFU")]
 
