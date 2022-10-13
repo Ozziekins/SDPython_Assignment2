@@ -24,8 +24,5 @@ class Activity:
     def overlaps(self, other) -> bool:
         return self._start < other.get_end() and self._end > other.get_start()
 
-    def dump(self):
-        return str(self)
-
     def __str__(self):
         return f'Activity(name: {self._name}, start: {self._start}, end: {self._end})'
