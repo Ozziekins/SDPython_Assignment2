@@ -1,22 +1,28 @@
+from Task1.ConsoleAction import ConsoleAction
+from Task1.Model.EdInstitution import EdInstitution
+
+
 class Console:
-    def __init__(self, actions: list):
-        self._message = 'Choose one operation from below :' \
-                        ' 1 : Add classroom or Auditorium to institution' \
-                        ' 2 : Print institution summary' \
-                        ' 3 : Assign activity to classroom' \
-                        ' 4 : Assign activity to LectureAuditorium' \
-                        ' 5 : Dump University data' \
-                        ' 6 : Exit program'
-        self._institutions = []
+    def __init__(self, actions: list[ConsoleAction], institutons: list[EdInstitution] = None):
+        self._message = 'Choose one operation from below :\n' \
+                        ' 1 : Add classroom or Auditorium to institution\n' \
+                        ' 2 : Print institution summary\n' \
+                        ' 3 : Assign activity to classroom\n' \
+                        ' 4 : Assign activity to LectureAuditorium\n' \
+                        ' 5 : Dump University data\n' \
+                        ' 6 : Exit program\n'
+        self._institutions = institutons if institutons else list()
         self.actions = actions
 
     def choose_action(self):
         print(self._message)
         try:
-            choice = int(input())
+            choice = int(input()) - 1
+            if choice < 0 or choice > 5:
+                raise ValueError
             self.actions[choice].execute(self._institutions)
         except ValueError:
-            print('Incorrect choice input. Please, try again!')
+            print('Incorrect choice input. Please, try again!\n')
 
     def __str__(self):
         return self._message

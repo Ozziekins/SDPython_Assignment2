@@ -12,16 +12,16 @@ class Activity:
         self._start = start
         self._end = end
 
-    def get_name(self):
+    def get_name(self) -> str:
         return self._name
 
-    def get_start(self):
+    def get_start(self) -> datetime:
         return self._start
 
-    def get_end(self):
+    def get_end(self) -> datetime:
         return self._end
 
-    def overlaps(self, other):
+    def overlaps(self, other) -> bool:
         return self._start < other.get_end() and self._end > other.get_start()
 
     def dump(self):

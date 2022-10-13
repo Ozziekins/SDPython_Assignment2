@@ -4,48 +4,48 @@ from datetime import datetime
 
 
 class Room:
-    def __init__(self, edu_name: str, number: str, capacity: int, air_cond: bool):
+    def __init__(self, edu_name: str, number: str, capacity: int, air_cond: bool, activities: list[Activity] = None):
         self._edu_name = edu_name
         self._number = number
         self._capacity = capacity
         self._air_cond = air_cond
-        self._activities = []
+        self._activities = activities if activities else list()
 
-    def get_edu_name(self):
+    def get_edu_name(self) -> str:
         return self._edu_name
 
-    def get_number(self):
+    def get_number(self) -> str:
         return self._number
 
     def set_number(self, number: str):
         self._number = number
 
-    def get_capacity(self):
+    def get_capacity(self) -> int:
         return self._capacity
 
-    def set_capacity(self, capacity: str):
+    def set_capacity(self, capacity: int):
         self._capacity = capacity
 
-    def get_air_cond(self):
+    def get_air_cond(self) -> bool:
         return self._air_cond
 
     def set_air_cond(self, air_cond: bool):
         self._air_cond = air_cond
 
-    def is_conditioned(self):
+    def is_conditioned(self) -> str:
         return 'Yes' if self._air_cond else 'No'
 
-    def _overlapping(self, other):
+    def _overlapping(self, other: Activity) -> list[Activity]:
         return list(filter(lambda x: other.overlaps(x), self._activities))
 
-    def is_available(self):
+    def is_available(self) -> bool:
         try:
             act = Activity("", "", datetime.now(), datetime.now())
             return len(self._overlapping(act)) == 0
         except ActivityOutOfRangeException:
             return False
 
-    def num_activities(self):
+    def num_activities(self) -> int:
         return len(self._activities)
 
     def add_activity(self, activity: Activity):
@@ -59,10 +59,6 @@ class Room:
             raise ActivitiesOverlapException('Activity conflicts with the following activities:\n' + '\n'.join(ov))
         else:
             self._activities.append(activity)
-
-    def dump(self):
-        acts = str([a.dump() for a in self._activities])
-        return f'(edu_name:{self._edu_name}, number: {self._number}, capacity: {self._capacity}, air_cond: {self._air_cond}, activities: {acts})'
 
     def __str__(self):
         return f'{self._number}.\n' \

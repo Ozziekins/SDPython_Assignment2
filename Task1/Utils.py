@@ -2,7 +2,7 @@ from Exceptions import UniversityNotFoundException
 from Model import EdInstitution
 
 
-def get_institution(institutions: list) -> EdInstitution:
+def get_institution(institutions: list[EdInstitution]) -> EdInstitution:
     name = str(input())
 
     inst = None
@@ -16,6 +16,6 @@ def get_institution(institutions: list) -> EdInstitution:
         raise UniversityNotFoundException(f'University with the name {name} not found!')
 
 
-def print_summary(institutions: list):
+def print_summary(institutions: list[EdInstitution]):
     str_inst = [str(i) for i in institutions]
-    print('\n\n'.join(str_inst))
+    print('\n\n'.join(str_inst) + '\n\n')
