@@ -22,6 +22,11 @@ class Activity:
         return self._end
 
     def overlaps(self, other) -> bool:
+        """
+        Checks if two activities overlap
+        :param other: Activity; other activity
+        :return: bool; overlap or not?
+        """
         return self._start < other.get_end() and self._end > other.get_start()
 
     def __str__(self):

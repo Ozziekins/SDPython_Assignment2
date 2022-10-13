@@ -10,12 +10,16 @@ import re
 
 
 class ConsoleAction:
-    def execute(self, institutions: list[EdInstitution]):
+    def execute(self, institutions: list[EdInstitution]) -> None:
         pass
 
 
 class AddAuditorium(ConsoleAction):
-    def execute(self, institutions: list[EdInstitution]):
+    def execute(self, institutions: list[EdInstitution]) -> None:
+        """
+        Adds a LecturAuditorium or a Klassroom to a university
+        :param institutions: list[EdInstitution] - list of Institutions
+        """
         try:
             print("Enter institution name :")
             inst = get_institution(institutions)
@@ -48,7 +52,11 @@ class AddAuditorium(ConsoleAction):
 # class AddActivityAuditorium(ConsoleAction):
 
 class Dump(ConsoleAction):
-    def execute(self, institutions: list[EdInstitution]):
+    def execute(self, institutions: list[EdInstitution]) -> None:
+        """
+        Dumps or loads institutions
+        :param institutions: list[EdInstitution] - list of Institutions
+        """
         try:
             print("Enter (1 - save universities, 2 - load university)")
             choice = int(input())
@@ -70,11 +78,19 @@ class Dump(ConsoleAction):
 
 
 class PrintSummary(ConsoleAction):
-    def execute(self, institutions: list[EdInstitution]):
+    def execute(self, institutions: list[EdInstitution]) -> None:
+        """
+        Prints summary for institutions
+        :param institutions: list[EdInstitution] - list of Institutions
+        """
         print_summary(institutions)
 
 
 class Exit(ConsoleAction):
-    def execute(self, institutions: list[EdInstitution]):
+    def execute(self, institutions: list[EdInstitution]) -> None:
+        """
+        Prints summary and exists the program
+        :param institutions: list[EdInstitution] - list of Institutions
+        """
         print_summary(institutions)
         sys.exit()

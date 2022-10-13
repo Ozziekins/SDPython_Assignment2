@@ -17,19 +17,19 @@ class Room:
     def get_number(self) -> str:
         return self._number
 
-    def set_number(self, number: str):
+    def set_number(self, number: str) -> None:
         self._number = number
 
     def get_capacity(self) -> int:
         return self._capacity
 
-    def set_capacity(self, capacity: int):
+    def set_capacity(self, capacity: int) -> None:
         self._capacity = capacity
 
     def get_air_cond(self) -> bool:
         return self._air_cond
 
-    def set_air_cond(self, air_cond: bool):
+    def set_air_cond(self, air_cond: bool) -> None:
         self._air_cond = air_cond
 
     def is_conditioned(self) -> str:
@@ -39,6 +39,10 @@ class Room:
         return list(filter(lambda x: other.overlaps(x), self._activities))
 
     def is_available(self) -> bool:
+        """
+        Checks if the room is available
+        :return: bool; is available?
+        """
         try:
             act = Activity("", "", datetime.now(), datetime.now())
             return len(self._overlapping(act)) == 0
@@ -46,14 +50,21 @@ class Room:
             return False
 
     def num_activities(self) -> int:
+        """
+        Returns number of activities assigned to the room
+        :return: int; number of activities
+        """
         return len(self._activities)
 
-    def add_activity(self, activity: Activity):
+    def add_activity(self, activity: Activity) -> None:
+        """
+        Adding an activity to the room
+        :param activity: Activity; activity to add
+        """
+        # Getting overlapping activities
         overlapping = self._overlapping(activity)
-        # print(all(overlapping))
-        # print(overlapping)
         if len(overlapping) != 0:
-            # Getting list of overlapping activities
+            # Converting overlapping to string for execption to print
             ov = [str(act) for act in overlapping]
             # Raising an exception
             raise ActivitiesOverlapException('Activity conflicts with the following activities:\n' + '\n'.join(ov))

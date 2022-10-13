@@ -1,24 +1,20 @@
 import json
 
-from Task1.Model.Room import Klassroom
+from Task1.Model.Room import Klassroom, Room
 from Task1.Model.Room import LectureAuditorium
 import jsonpickle
 
 
 class EdInstitution:
     def __init__(self, name: str, klassrooms: set[Klassroom] = None, auditoriums: set[LectureAuditorium] = None):
-        if klassrooms is None:
-            klassrooms = set()
-        if auditoriums is None:
-            auditoriums = set()
         self._name = name
         self._klassrooms = klassrooms if klassrooms else set()
         self._auditoriums = auditoriums if auditoriums else set()
 
-    def get_name(self):
+    def get_name(self) -> str:
         return self._name
 
-    def add_kroom(self, k_room: Klassroom):
+    def add_kroom(self, k_room: Klassroom) -> None:
         """
         Adds klassrom to the EdInstitution
         :param k_room: KlassRoom; instance of Klassroom to add
@@ -26,33 +22,47 @@ class EdInstitution:
 
         self._klassrooms.add(k_room)
 
-    def add_auditorium(self, aud: LectureAuditorium):
+    def add_auditorium(self, aud: LectureAuditorium) -> None:
         """
         Adds auditorium to the university
         :param aud: LectureAuditorium; instance of LectureAuditorium to add
         """
         self._auditoriums.add(aud)
 
-    def _remove(self, number: str, rooms: set):
+    def _remove(self, number: str, rooms: set[Room]) -> set[Room]:
+        """
+        Helper function to remove room (lecture or auditorium)
+        :param number: str; number of room to delete
+        :param rooms: set[Rooms]; rooms from which to delete one
+        :return: set[Rooms]; rooms without removed one
+        """
         to_del = None
         for room in rooms:
             if room.get_number() == number:
                 to_del = room
 
         if to_del:
-            self._klassrooms.remove(to_del)
+            rooms.remove(to_del)
 
         return rooms
 
-    def _available_krooms(self):
+    def _available_krooms(self) -> int:
+        """
+        Helper function to get how many klassrooms are available in university
+        :return: int; number of available klassrooms
+        """
         available = list(filter(lambda x: x.is_available(), self._klassrooms))
         return len(available)
 
-    def _available_auds(self):
+    def _available_auds(self) -> int:
+        """
+        Helper function to get how many lectureAuditoriums are available in university
+        :return: int; number of available lectureAuditoriums
+        """
         available = list(filter(lambda x: x.is_available(), self._auditoriums))
         return len(available)
 
-    def remove_kroom(self, number: str):
+    def remove_kroom(self, number: str) -> None:
         """
         Removes a KlassRoom from the set of Klassrooms, using auditorium number.
         If such KlassRoom is not found - does nothing
@@ -60,7 +70,7 @@ class EdInstitution:
         """
         self._klassrooms = self._remove(number, self._klassrooms)
 
-    def remove_auditorium(self, number: str):
+    def remove_auditorium(self, number: str) -> None:
         """
         Removes a LectureAuditorium from the set of LectureAuditoriums, using auditorium number.
         If such LectureAuditorium is not found - does nothing
@@ -68,14 +78,12 @@ class EdInstitution:
         """
         self._auditoriums = self._remove(number, self._auditoriums)
 
-    def save_to_file(self):
+    def save_to_file(self) -> None:
+        """
+        Writes university to file {uni_name}.txt
+        """
         with open(f'{self._name}.json', 'w') as file:
             file.write(jsonpickle.encode(self, indent=4))
-
-    # def __dict__(self):
-    #     auds = [a.__dict__() for a in self._auditoriums]
-    #     klass = [k.__dict__() for k in self._klassrooms]
-    #     return {"name": self._name, "auditoriums": auds, "klassrooms": klass}
 
     def __str__(self):
         return f'{self._name}' + \
