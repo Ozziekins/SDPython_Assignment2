@@ -1,5 +1,3 @@
-import json
-
 from Task1.Model.Room import Klassroom, Room
 from Task1.Model.Room import LectureAuditorium
 import jsonpickle
