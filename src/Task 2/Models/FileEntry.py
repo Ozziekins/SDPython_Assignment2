@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Integer, DateTime
-from SqlProvider import Base
+from .Base import Base
 
 
 class Entry(Base):

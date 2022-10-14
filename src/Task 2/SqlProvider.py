@@ -1,8 +1,5 @@
-import psycopg2
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base
-
-Base = declarative_base()
+from Models import Base, Entry, User
 
 
 class SqlProvider:
@@ -23,4 +20,4 @@ class SqlProvider:
         self.cursor.execute(query)
 
     def create_tables(self):
-        Base.metadata.create_all(self.engine)
+        Base.metadata.create_all(self.engine, checkfirst=True)
