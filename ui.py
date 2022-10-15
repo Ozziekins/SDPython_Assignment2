@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from src.Task_2 import SqlProvider
-from src.Task_2 import Entry
+# from src import SqlProvider
+# from src import Entry
 from sqlalchemy.orm import sessionmaker
 
 Session = sessionmaker(bind=SqlProvider.engine)
@@ -22,11 +22,7 @@ def isSuperUser(userID):
     return "Yes"
 
 def queryUserID(userID):
-    # num = session.query(Entry.session_id).filter(Entry.client_user_id == userID).count()
-    num = session.query(Entry.client_user_id).distinct(Entry.client_user_id).group_by(Entry.client_user_id).count()
-    # row = SqlProvider.execute()
-    print(num)
-    return num
+    pass
 
 def printUserSummary():
     # 0302549e-5522-43e5-b2f2-0b470932a6fd

@@ -30,10 +30,10 @@ def auth_decorator(func):
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    '../../assets/client_secrets.json', scopes)
+                    'assets/client_secrets.json', scopes)
                 creds = flow.run_local_server(port=0)
             # Save the credentials for the next run
-            with open('../../assets/token.json', 'w') as token:
+            with open('assets/token.json', 'w') as token:
                 token.write(creds.to_json())
 
         return func(creds, *args, **kwargs)
