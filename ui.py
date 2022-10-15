@@ -1,9 +1,13 @@
 from sqlalchemy.orm import Session
-# from src import SqlProvider
-# from src import Entry
+from src import SqlProvider
+from src import Entry
+import pandas as pd
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import text
 
-Session = sessionmaker(bind=SqlProvider.engine)
+sqlProvider = SqlProvider()
+
+Session = sessionmaker(bind=sqlProvider.engine)
 session = Session()
 
 def statsFor7Days():
@@ -22,10 +26,22 @@ def isSuperUser(userID):
     return "Yes"
 
 def queryUserID(userID):
-    pass
+    # sql = f"""SELECT count(*) FROM public."Entries"
+    # WHERE client_user_id = '{userID}';"""
+    #
+    # with sqlProvider.engine.connect().execution_options(autocommit=True) as conn:
+    #     df = pd.read_sql(sql, con=conn)
+    #     # query = conn.execute(text(sql))
+    # print(df.values.data)
+    # df = pd.DataFrame(query.fetchall())
+    # print(df.head(5))
+
+    num = session.query(Entry.id).filter(Entry.client_user_id == userID).statement
+    df = pd.read_sql(num, sqlProvider.engine)
+    print(df.values)
 
 def printUserSummary():
-    # 0302549e-5522-43e5-b2f2-0b470932a6fd
+    # 07393db8-e059-4cbd-b16f-88ab2019f045
     userID = input("Enter user id: \n")
 
     db = queryUserID(userID)
