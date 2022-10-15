@@ -10,21 +10,21 @@ from ML.stream_quality import QualityPredictor
 from threading import Thread
 
 
-def train_model(data):
+def aggregate_data(data):
     agg = {
         'timestamp': ['min', 'max'],
         'dropped_frames': ['min', 'mean'],
         'FPS': ['min', 'max', 'mean', 'std'],
         'RTT': ['min', 'max', 'mean', 'std'],
-        'bitrate': ['min', 'max', 'mean', 'std']
+        'bitrate': ['min', 'max', 'mean', 'std'],
+        'device': lambda x: pd.Series.mode(x)
     }
     aggregate_df = data.groupby(['client_user_id', 'session_id'], as_index=False).agg(agg)
     aggregate_df.columns = ['client_user_id', 'session_id', 'session_start', 'session_end', 'dropped_frames_min',
                             'dropped_frames_mean', 'FPS_min', 'FPS_max', 'FPS_mean', 'FPS_std', 'RTT_min', 'RTT_max',
-                            'RTT_mean', 'RTT_std', 'bitrate_min', 'bitrate_max', 'bitrate_mean', 'bitrate_std']
+                            'RTT_mean', 'RTT_std', 'bitrate_min', 'bitrate_max', 'bitrate_mean', 'bitrate_std', 'device']
     aggregate_df['duration'] = (aggregate_df['session_end'] - aggregate_df['session_start']).dt.seconds
-    DurationTrainer().train(
-        aggregate_df.drop(['client_user_id', 'session_id', 'session_start', 'session_end'], axis=1))
+    return aggregate_df
 
 
 def get_data():
@@ -37,13 +37,15 @@ def get_data():
         if file_id is not None:
             download_url = f"https://drive.google.com/uc?id={'1GdUmvOH0eZu8bBYujTzpWuyCF9KHwnB7'}"
             df = pd.read_csv(download_url, index_col=False, parse_dates=['timestamp'])
-            df.to_sql('Entries', con=sql_provider.engine, if_exists='append', index=False)
+            df = aggregate_data(df)
+            df.to_sql('AggregateEntries', con=sql_provider.engine, if_exists='append', index=False)
             loaded_day = LoadedDay(file_date=file_date, fetch_date=datetime.today())
             Session = sessionmaker(sql_provider.engine)
             with Session() as session:
                 session.add(loaded_day)
                 session.commit()
-                train_model(df)
+                DurationTrainer().train(
+                    df.drop(['client_user_id', 'session_id', 'session_start', 'session_end', 'device'], axis=1))
                 loaded_day.train_date = datetime.today()
                 session.commit()
         time_end = perf_counter()
