@@ -1,10 +1,11 @@
 from .Base import Base
 from .FileEntry import Entry
-from .User import User
+from .LoadedDay import LoadedDay
 
 
 __all__ = [
     Base,
     Entry,
-    User
+    LoadedDay,
+    LoadedDay
 ]

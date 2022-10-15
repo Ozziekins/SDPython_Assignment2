@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
-from Models import Base, Entry, User
+from Models import Base, Entry, LoadedDay
 
 
 class SqlProvider:
     _instance = None
-    engine = create_engine('postgresql://postgres:example@127.0.0.1/app', echo=True)
+    engine = create_engine('postgresql://postgres:example@127.0.0.1/app')
     connection = None
 
     def __new__(cls, *args, **kwargs):
