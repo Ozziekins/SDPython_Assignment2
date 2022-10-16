@@ -11,12 +11,22 @@ Session = sessionmaker(bind=sqlProvider.engine)
 session = Session()
 
 def statsFor7Days():
-#     if today is earlier than 08.10.2022, then print just stats for all the days since start with a note
-    summary = [13451, 30, 200001]
+    # if today is earlier than start day - 7days, then print just stats for all the days since start with a note
+    df = pd.read_sql_query('select * from "Entries";', con=sqlProvider.engine)
+    df["timestamp"] = pd.to_datetime(df["timestamp"])
+
+    total_sessions = df.session_id.nunique()
+
+    sessions_time = df.groupby(["client_user_id", "session_id"])["timestamp"].agg(["max", "min"])
+    sessions_time["diff"] = sessions_time["max"] - sessions_time["min"]
+    average_time_per_session = round(sessions_time["diff"].mean() / pd.Timedelta('1 minute'), 2)
+
+    sum_of_hours = round(sessions_time["diff"].sum() / pd.Timedelta('1 hour'), 2)
+
     summaryText = f"""Statistics for the past 7 days:
-        Total sessions : {summary[0]} 
-        Average time spent per session : {summary[1]} min
-        Sum of hours spent by all users : {summary[2]} hours"""
+        Total sessions : {total_sessions} 
+        Average time spent per session : {average_time_per_session} min
+        Sum of hours spent by all users : {sum_of_hours} hours \n"""
     print(summaryText)
 
     return summaryText
