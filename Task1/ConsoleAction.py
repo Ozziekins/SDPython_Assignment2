@@ -33,7 +33,8 @@ class AddAuditorium(ConsoleAction):
             if not args:
                 raise ValueError
 
-            capacity, number, air_conditioner = int(args.group(1)), args.group(2), True if args.group(3) == 'yes' else False
+            capacity, number, air_conditioner = int(args.group(1)), args.group(2), True if args.group(
+                3) == 'yes' else False
 
             if choice == 1:
                 k_room = Klassroom(inst.get_name(), number, capacity, air_conditioner)
@@ -48,10 +49,6 @@ class AddAuditorium(ConsoleAction):
             print(repr(error))
 
 
-
-work_start = time.fromisoformat("06:00")
-work_finish =time.fromisoformat("21:00")
-
 class AddActivityKlassRoom(ConsoleAction):
 
     def execute(self, institutions):
@@ -60,11 +57,10 @@ class AddActivityKlassRoom(ConsoleAction):
             print("Enter institution name :")
             inst = get_institution(institutions)
 
-
             print("enter the desired klassroom number :")
             activity_room = str(input())
 
-            k_room= inst.get_klassroom(activity_room)
+            k_room = inst.get_klassroom(activity_room)
 
             print("enter activity name:")
             activity_name = str(input())
@@ -72,30 +68,20 @@ class AddActivityKlassRoom(ConsoleAction):
             print("Enter the slot that you desire in format HH:MM - HH:MM :")
             slot = re.findall("\d\d[:]\d\d", input())
 
-
-
             start_slot = time.fromisoformat(slot[0])
             finish_slot = time.fromisoformat(slot[1])
 
-
-
-
             activity = Activity(name=activity_name, room=k_room.get_number(), start=start_slot, end=finish_slot)
-
 
             k_room.add_activity(activity)
 
             print(f"Successfully added activity to Klassroom from {start_slot} to {finish_slot} ")
 
-        except (ActivityOutOfRangeException, ActivitiesOverlapException, UniversityNotFoundException, RoomNotFoundException) as ex:
+        except (ActivityOutOfRangeException, ActivitiesOverlapException, UniversityNotFoundException,
+                RoomNotFoundException) as ex:
             print(repr(ex))
         except(IndexError):
             print("Incorrect input format. please try aagain.")
-
-
-
-
-
 
 
 class AddActivityAuditorium(ConsoleAction):
@@ -108,7 +94,7 @@ class AddActivityAuditorium(ConsoleAction):
             print("enter the desired Auditorium number :")
             activity_auditorium = str(input())
 
-            aud_room= inst.get_auditorium(activity_auditorium)
+            aud_room = inst.get_auditorium(activity_auditorium)
 
             print("enter activity name:")
             activity_name = str(input())
@@ -126,7 +112,8 @@ class AddActivityAuditorium(ConsoleAction):
 
 
 
-        except (ActivityOutOfRangeException, ActivitiesOverlapException, UniversityNotFoundException, RoomNotFoundException) as ex:
+        except (ActivityOutOfRangeException, ActivitiesOverlapException, UniversityNotFoundException,
+                RoomNotFoundException) as ex:
             print(repr(ex))
         except(IndexError):
             print("Incorrect input format. please try aagain.")
