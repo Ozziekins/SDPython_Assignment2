@@ -5,6 +5,7 @@ import pandas as pd
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
 from datetime import datetime, date, timedelta
+from src import DurationPredict, QualityPredictor
 
 sqlProvider = SqlProvider()
 
@@ -138,13 +139,13 @@ def totalNumberOfBadSessions(userID, df):
                             'dropped_frames_std', 'dropped_frames_max']
     aggregate_df = aggregate_df.drop(columns=['session_id'])
 
-    # qualityPredictor = QualityPredictor()
+    quality_predictor = QualityPredictor()
 
-    # df = aggregate_df.apply(qualityPredictor.predict, axis=1)
-    # num = df.sum()
+    df = aggregate_df.apply(quality_predictor.predict, axis=1)
+    num = df.sum()
 
-    # return num
-    return 0
+    return num
+
 
 def predictNextSessionDuration(userID):
 
@@ -154,13 +155,13 @@ def predictNextSessionDuration(userID):
     df_mean = df[["dropped_frames_min", "dropped_frames_mean", "FPS_min", "FPS_max", "FPS_mean", "FPS_std", "RTT_min",
                   "RTT_max", "RTT_mean", "RTT_std", "bitrate_min", "bitrate_max", "bitrate_mean", "bitrate_std"]].mean()
 
+    next_session_duration = DurationPredict(df_mean)
+    return next_session_duration
 
-    # next_session_duration = DurationPredict(df_mean)
-    # return next_session_duration
-    return 0
 
 def fetchAndUpdateData():
     pass
+
 
 def topFiveUsers():
     # query our db by time spent and return the 5rows
@@ -183,6 +184,7 @@ def saveToFile(data, file_name):
     with open(file_name+".txt", "w") as f:
         f.write(data)
 
+
 def exitSession():
     summaryText = statsFor7Days()
 
@@ -193,6 +195,7 @@ def exitSession():
         pass
     else:
         saveSummary = input("Answer not recognized. Do you want to save the summary? (yes/no) ")
+
 
 def begin():
     while True:
