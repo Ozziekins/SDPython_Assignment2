@@ -81,7 +81,7 @@ class DurationTrainer:
         batch_size = 32
         dataset = preprocess()
         data_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
-        epochs = 10000
+        epochs = 10
         for epoch in range(epochs):
             train_step(
                 device='cpu'
