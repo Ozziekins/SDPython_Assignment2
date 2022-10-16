@@ -14,3 +14,8 @@ class UniversityNotFoundException(Exception):
     """
     Raised when university provided is not found
     """
+
+class RoomNotFoundException(Exception):
+    """
+    Raised when a room is not found
+    """

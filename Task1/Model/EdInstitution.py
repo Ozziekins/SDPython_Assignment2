@@ -1,3 +1,4 @@
+from Task1.Exceptions import RoomNotFoundException
 from Task1.Model.Room import Klassroom, Room
 from Task1.Model.Room import LectureAuditorium
 import jsonpickle
@@ -11,6 +12,30 @@ class EdInstitution:
 
     def get_name(self) -> str:
         return self._name
+
+    def get_auditoriums(self) -> set[LectureAuditorium]:
+        return self._auditoriums
+
+    def get_krooms(self) -> set[Klassroom]:
+        return self._klassrooms
+
+    def get_room(self, number: str, auditorium: bool) -> Room:
+        room = None
+        rooms = self._auditoriums if auditorium else self._klassrooms
+        for r in rooms:
+            if r.get_number() == number:
+                room = r
+
+        if room:
+            return room
+        else:
+            raise RoomNotFoundException(f'Room number {number} not found')
+
+    def get_auditorium(self, number: str) -> Room:
+        return self.get_room(number, auditorium=True)
+
+    def get_klassroom(self, number: str) -> Room:
+        return self.get_room(number, auditorium=False)
 
     def add_kroom(self, k_room: Klassroom) -> None:
         """
