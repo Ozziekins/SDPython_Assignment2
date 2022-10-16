@@ -1,6 +1,6 @@
 from Task1.Model.Activity import Activity
 from Task1.Exceptions import ActivitiesOverlapException, ActivityOutOfRangeException
-from datetime import datetime
+from datetime import  datetime
 
 
 class Room:
@@ -44,7 +44,7 @@ class Room:
         :return: bool; is available?
         """
         try:
-            act = Activity("", "", datetime.now(), datetime.now())
+            act = Activity("", "", datetime.now().time(), datetime.now().time())
             return len(self._overlapping(act)) == 0
         except ActivityOutOfRangeException:
             return False

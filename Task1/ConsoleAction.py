@@ -73,7 +73,7 @@ class Dump(ConsoleAction):
                     f = file.read()
                     institutions.append(jsonpickle.decode(f))
             print('Successfully saved!')
-        except (ValueError, FileNotFoundError):
+        except (ValueError, FileNotFoundError, Exception):
             print('Incorrect choice input. Please, try again!')
 
 

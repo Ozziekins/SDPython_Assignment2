@@ -1,10 +1,10 @@
-from datetime import datetime
+from datetime import time
 
 from Task1.Exceptions import ActivityOutOfRangeException
 
 
 class Activity:
-    def __init__(self, name: str, room: str, start: datetime, end: datetime):
+    def __init__(self, name: str, room: str, start: time, end: time):
         if start.hour < 8 or end.hour > 21:
             raise ActivityOutOfRangeException("Activity should be during working hours! (8:00-21:00)")
         self._room = room
@@ -15,10 +15,10 @@ class Activity:
     def get_name(self) -> str:
         return self._name
 
-    def get_start(self) -> datetime:
+    def get_start(self) -> time:
         return self._start
 
-    def get_end(self) -> datetime:
+    def get_end(self) -> time:
         return self._end
 
     def overlaps(self, other) -> bool:
