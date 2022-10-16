@@ -2,8 +2,7 @@ import sys
 from datetime import time
 import jsonpickle
 
-from Exceptions import UniversityNotFoundException, ActivitiesOverlapException, ActivityOutOfRangeException, \
-    RoomNotFoundException
+from Task1.Exceptions import *
 from Task1.Model.EdInstitution import EdInstitution
 from Utils import get_institution, print_summary
 from Model.Room import Klassroom, LectureAuditorium
