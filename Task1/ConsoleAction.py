@@ -2,7 +2,8 @@ import sys
 from datetime import time
 import jsonpickle
 
-from Exceptions import UniversityNotFoundException, ActivitiesOverlapException, ActivityOutOfRangeException
+from Exceptions import UniversityNotFoundException, ActivitiesOverlapException, ActivityOutOfRangeException, \
+    RoomNotFoundException
 from Task1.Model.EdInstitution import EdInstitution
 from Utils import get_institution, print_summary
 from Model.Room import Klassroom, LectureAuditorium
@@ -87,14 +88,14 @@ class AddActivityKlassRoom(ConsoleAction):
 
             print(f"Successfully added activity to Klassroom from {start_slot} to {finish_slot} ")
 
-        except (ActivityOutOfRangeException) as out_of_range:
-            print(repr(out_of_range))
-        except(ActivitiesOverlapException) as overlap:
-            print(repr(overlap))
-        except (UniversityNotFoundException) as not_found:
-            print(repr(not_found))
-        except(Exception):
+        except (ActivityOutOfRangeException, ActivitiesOverlapException, UniversityNotFoundException, RoomNotFoundException) as ex:
+            print(repr(ex))
+        except(IndexError):
             print("Incorrect input format. please try aagain.")
+
+
+
+
 
 
 
@@ -126,18 +127,9 @@ class AddActivityAuditorium(ConsoleAction):
 
 
 
-        except (ActivityOutOfRangeException) as out_of_range:
-
-            print(repr(out_of_range))
-
-        except(ActivitiesOverlapException) as overlap:
-
-            print(repr(overlap))
-
-        except (UniversityNotFoundException) as not_found:
-
-            print(repr(not_found))
-        except(Exception):
+        except (ActivityOutOfRangeException, ActivitiesOverlapException, UniversityNotFoundException, RoomNotFoundException) as ex:
+            print(repr(ex))
+        except(IndexError):
             print("Incorrect input format. please try aagain.")
 
 
