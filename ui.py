@@ -21,61 +21,80 @@ def statsFor7Days():
 
     return summaryText
 
-def isSuperUser(userID):
+def isSuperUser(userID, df):
     # a user who has sessions time more than 60 min in a week
-    return "Yes"
+    sessions_time = df.groupby("session_id")["timestamp"].agg(["max", "min"])
+    sessions_time["diff"] = sessions_time["max"] - sessions_time["min"]
+    total_session = sessions_time["diff"].sum() / pd.Timedelta('1 minute')
 
-def queryUserID(userID):
-    # sql = f"""SELECT count(*) FROM public."Entries"
-    # WHERE client_user_id = '{userID}';"""
-    #
-    # with sqlProvider.engine.connect().execution_options(autocommit=True) as conn:
-    #     df = pd.read_sql(sql, con=conn)
-    #     # query = conn.execute(text(sql))
-    # print(df.values.data)
-    # df = pd.DataFrame(query.fetchall())
-    # print(df.head(5))
-
-    num = session.query(Entry.id).filter(Entry.client_user_id == userID).statement
-    df = pd.read_sql(num, sqlProvider.engine)
-    print(df.values)
+    if total_session > 60:
+        return "Yes"
+    else:
+        return "No"
 
 def printUserSummary():
     # 07393db8-e059-4cbd-b16f-88ab2019f045
     userID = input("Enter user id: \n")
 
-    db = queryUserID(userID)
-    print(db)
+    df = pd.read_sql_query('select * from "Entries";', con=sqlProvider.engine)
 
-    # while True:
-    #     if userID in db:
-    #         # if no interval is given, then give entire summary of this user
-    #         # interval = input("Enter period (yyyy/mm/dd - yyyy/mm/dd) : \n")
-    #
-    #         print(f"""User found!!
-    #             User with id : 0116f41a-28b1-4d81-b250-15d7956e2be1
-    #                 Number of sessions : 10
-    #                 Date of first session : 2021/10/10
-    #                 Average time spent per session : 2 hrs
-    #                 Date of most recent session : 2022/09/30
-    #                 Most frequently used device : Windows
-    #                 Devices used : [Mac OS, Windows, Android]
-    #                 Average of : 1) Round trip time (RTT) 2) Frames per Second 3) Dropped Frames 4) bitrate
-    #                 Total number of bad sessions (predicted using ML model)
-    #                 Estimated next session time : 4 hrs
-    #                 Super user : Yes\n""")
-    #
-    #         answer = input("Find another user ? (yes/no) \n")
-    #         if answer == "yes":
-    #             userID = input("Enter user id: \n")
-    #         elif answer == "no":
-    #             break
-    #         else:
-    #             print("Answer not recognized. Exiting\n")
-    #             break
-    #     else:
-    #         print("User cannot be found")
-    #         userID = input("Try again, Enter user id: \n")
+    while True:
+        if userID in set(df['client_user_id']):
+            df["timestamp"] = pd.to_datetime(df["timestamp"])
+
+            df.query(f"client_user_id == '{userID}'", inplace=True)
+            num_sessions = df.session_id.nunique()
+
+            df.sort_values(by="timestamp")
+            df["just_date"] = df["timestamp"].dt.date
+            first_session = df["just_date"].iat[0]
+
+            sessions_time = df.groupby("session_id")["timestamp"].agg(["max", "min"])
+            sessions_time["diff"] = sessions_time["max"] - sessions_time["min"]
+            average_per_session = sessions_time["diff"].mean() / pd.Timedelta('1 minute')
+
+            df.sort_values(by="timestamp", ascending=False)
+            recent_session = df["just_date"].iat[0]
+
+            most_device = df["device"].mode().values
+
+            devices = df["device"].unique()
+
+            super_user = isSuperUser(userID, df)
+
+            rtt = round(df["RTT"].mean(), 3)
+            fps = round(df["FPS"].mean(), 3)
+            dropped_frames = round(df["dropped_frames"].mean(), 3)
+            bitrate = round(df["bitrate"].mean(), 3)
+
+            # if no interval is given, then give entire summary of this user
+            # interval = input("Enter period (yyyy/mm/dd - yyyy/mm/dd) : \n")
+
+            print(f"""User found!!
+                User with id : {userID}
+                    Number of sessions : {num_sessions}
+                    Date of first session : {first_session}
+                    Average time spent per session : {average_per_session} minutes
+                    Date of most recent session : {recent_session}
+                    Most frequently used device : {most_device}
+                    Devices used : {devices}
+                    Average of : 1) Round trip time is {rtt} (RTT) 2) Frames per Second is {fps} 3) Dropped Frames is {dropped_frames} 4) bitrate is {bitrate}
+                    Total number of bad sessions (predicted using ML model)
+                    Estimated next session time : 4 hrs
+                    Super user : {super_user}\n""")
+
+            answer = input("Find another user ? (yes/no) \n")
+            if answer == "yes":
+                userID = input("Enter user id: \n")
+                df = pd.read_sql_query('select * from "Entries";', con=sqlProvider.engine)
+            elif answer == "no":
+                break
+            else:
+                print("Answer not recognized. Exiting\n")
+                break
+        else:
+            print("User cannot be found")
+            userID = input("Try again, Enter user id: \n")
 
 # def printSessionSummary():
 #     # b3aebc80-ff28-4569-bd18-2ace692f668e
@@ -89,7 +108,18 @@ def fetchAndUpdateData():
 
 def topFiveUsers():
     # query our db by time spent and return the 5rows
-    pass
+    df = pd.read_sql_query('select * from "Entries";', con=sqlProvider.engine)
+    df["timestamp"] = pd.to_datetime(df["timestamp"])
+
+    sessions_time = df.groupby(["client_user_id", "session_id"])["timestamp"].agg(["max", "min"])
+    sessions_time["diff"] = sessions_time["max"] - sessions_time["min"]
+    sessions_time_total = sessions_time.groupby("client_user_id")["diff"].agg(["sum"])
+    sessions_time_total["hours spent gaming"] = sessions_time_total["sum"].dt.components["hours"]
+    sessions_time_total = sessions_time_total.sort_values(by="sum", ascending=False)
+
+    top_users = sessions_time_total.head(5)
+    print("Top users are: \n", top_users, "\n")
+
 
 def saveToFile(data, file_name):
     with open(file_name+".txt", "w") as f:

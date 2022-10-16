@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from src.Task2.Models import Base, Entry, User
+from .Models import Base, Entry, User
 
 
 class SqlProvider:
