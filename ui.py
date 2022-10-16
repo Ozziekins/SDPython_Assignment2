@@ -128,62 +128,36 @@ def printUserSummary():
 
 def totalNumberOfBadSessions(userID, df):
 
-    df = df.groupby("session_id")["timestamp"].agg(["max", "min"])
     agg = {
-        'fps': ['mean', 'std'],
+        'FPS': ['mean', 'std'],
         'RTT': ['mean', 'std'],
         'dropped_frames': ['mean', 'std', 'max']
     }
     aggregate_df = df.groupby('session_id', as_index=False).agg(agg)
     aggregate_df.columns = ['session_id', 'FPS_mean', 'FPS_std', 'RTT_mean', 'RTT_std', 'dropped_frames_mean',
                             'dropped_frames_std', 'dropped_frames_max']
+    aggregate_df = aggregate_df.drop(columns=['session_id'])
 
     # qualityPredictor = QualityPredictor()
-    # num = qualityPredictor.predict(aggregate_df)
-    #
+
+    # df = aggregate_df.apply(qualityPredictor.predict, axis=1)
+    # num = df.sum()
+
     # return num
+    return 0
 
 def predictNextSessionDuration(userID):
 
-    df = pd.read_sql_query(f"""select * from public."AggregateEntries" where client_user_id='{userID}';""", con=sqlProvider.engine)
+    df = pd.read_sql_query(f"""select * from public."AggregateEntries" where client_user_id='{userID}';""",
+                           con=sqlProvider.engine)
 
-    agg = {
-        'dropped_frames_mean': ['min', 'mean'],
-        'FPS': ['min', 'max', 'mean', 'std'],
-        'RTT': ['min', 'max', 'mean', 'std'],
-        'bitrate': ['min', 'max', 'mean', 'std']
-    }
-    aggregate_df = df.groupby('session_id', as_index=False).agg(agg)
-    aggregate_df.columns = ['session_id', 'dropped_frames_min', 'dropped_frames_mean',
-                            'FPS_min', 'FPS_max', 'FPS_mean', 'FPS_std', 'RTT_min', 'RTT_max',
-                            'RTT_mean', 'RTT_std', 'bitrate_min', 'bitrate_max', 'bitrate_mean', 'bitrate_std']
+    df_mean = df[["dropped_frames_min", "dropped_frames_mean", "FPS_min", "FPS_max", "FPS_mean", "FPS_std", "RTT_min",
+                  "RTT_max", "RTT_mean", "RTT_std", "bitrate_min", "bitrate_max", "bitrate_mean", "bitrate_std"]].mean()
 
-    dropped_frames_min = df["dropped_frames_min"].mean()
-    dropped_frames_mean = df["dropped_frames_mean"].mean()
 
-    fps_min = df["FPS_min"].mean()
-    fps_max = df["FPS_max"].mean()
-    fps_mean = df["FPS_mean"].mean()
-    fps_std = df["FPS_std"].mean()
-
-    rtt_min = df["RTT_min"].mean()
-    rtt_max = df["RTT_max"].mean()
-    rtt_mean = df["RTT_mean"].mean()
-    rtt_std = df["RTT_std"].mean()
-
-    bitrate_min = df["bitrate_min"].mean()
-    bitrate_max = df["bitrate_max"].mean()
-    bitrate_mean = df["bitrate_mean"].mean()
-    bitrate_std = df["bitrate_std"].mean()
-
-    data = [dropped_frames_min, dropped_frames_mean,
-            fps_min, fps_max, fps_mean, fps_std,
-            rtt_min, rtt_max, rtt_mean, rtt_std,
-            bitrate_min, bitrate_max, bitrate_mean, bitrate_std]
-
-    # next_session_duration = DurationPredict(data)
+    # next_session_duration = DurationPredict(df_mean)
     # return next_session_duration
-    return data
+    return 0
 
 def fetchAndUpdateData():
     pass
