@@ -135,13 +135,13 @@ def totalNumberOfBadSessions(userID, df):
         'dropped_frames': ['mean', 'std', 'max']
     }
     aggregate_df = df.groupby('session_id', as_index=False).agg(agg)
-    aggregate_df.columns = ['session_id', 'FPS_mean', 'FPS_std', 'RTT_mean', 'RTT_std', 'dropped_frames_mean',
+    aggregate_df.columns = ['session_id', 'fps_mean', 'fps_std', 'rtt_mean', 'rtt_std', 'dropped_frames_mean',
                             'dropped_frames_std', 'dropped_frames_max']
     aggregate_df = aggregate_df.drop(columns=['session_id'])
 
     quality_predictor = QualityPredictor()
 
-    df = aggregate_df.apply(quality_predictor.predict, axis=1)
+    df = aggregate_df.apply(lambda x: quality_predictor.predict(x.to_frame().transpose()), axis=1)
     num = df.sum()
 
     return num
