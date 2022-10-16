@@ -1,11 +1,15 @@
+from pathlib import Path
+
 import joblib
-import pandas as pd
 
 
 class QualityPredictor:
     _instance = None
     _scaler = None
     _predict = None
+
+    _scalerPath = (Path(__file__).parent / '../../../assets/scaler.save').resolve()
+    _regressorPath = (Path(__file__).parent / '../../../assets/regression.save').resolve()
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
@@ -14,10 +18,9 @@ class QualityPredictor:
 
     def __init__(self):
         if self._scaler is None:
-            print(joblib.load('../../../assets/scaler.save'))
-            self._scaler = joblib.load('../../../assets/scaler.save')
+            self._scaler = joblib.load(self._scalerPath)
         if self._predict is None:
-            self._predict = joblib.load('../../../assets/regression.save')
+            self._predict = joblib.load(self._regressorPath)
 
     def predict(self, df):
         """
@@ -30,13 +33,3 @@ class QualityPredictor:
         df_drop = df.drop(['dropped_frames_max'], axis=1)
         return self._predict.predict(df_drop)[0]
 
-
-test = pd.DataFrame(data=[[-0.938268, -0.524444, 0.244128, -0.089892, -0.017157, -0.015607, 12]], columns=['fps_mean',
-                                                                                                           'fps_std',
-                                                                                                           'rtt_mean',
-                                                                                                           'rtt_std',
-                                                                                                           'dropped_frames_mean',
-                                                                                                           'dropped_frames_std',
-                                                                                                           'dropped_frames_max'])
-quality = QualityPredictor()
-print(quality.predict(test))

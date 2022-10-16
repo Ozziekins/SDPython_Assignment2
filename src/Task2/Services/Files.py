@@ -1,5 +1,5 @@
 from datetime import timedelta
-from drive_service import get_file_id
+from .drive_service import get_file_id
 
 
 class Files(object):
@@ -19,7 +19,7 @@ class Files(object):
             self.currentDate = self.startDate
         else:
             self.currentDate = self.currentDate + timedelta(days=1)
-        return get_file_id(self.currentDate.strftime("raw_%Y_%m_%d.csv"))
+        return self.currentDate, get_file_id(self.currentDate.strftime("raw_%Y_%m_%d.csv"))
 
 
 class FileIterator(object):
