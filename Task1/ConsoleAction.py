@@ -137,6 +137,8 @@ class AddActivityAuditorium(ConsoleAction):
         except (UniversityNotFoundException) as not_found:
 
             print(repr(not_found))
+        except(Exception):
+            print("Incorrect input format. please try aagain.")
 
 
 class Dump(ConsoleAction):
