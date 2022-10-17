@@ -1,7 +1,7 @@
 from threading import Thread
+from ui import begin
+from fetch import get_data
 
-from src.Task2.test import get_data
-from src.Task2.ui import begin
 import shutup
 shutup.please()
 

@@ -8,8 +8,8 @@ class QualityPredictor:
     _scaler = None
     _predict = None
 
-    _scalerPath = (Path(__file__).parent / '../../../assets/scaler.save').resolve()
-    _regressorPath = (Path(__file__).parent / '../../../assets/regression.save').resolve()
+    _scalerPath = (Path(__file__).parent / '../../../Task2/assets/scaler.save').resolve()
+    _regressorPath = (Path(__file__).parent / '../../../Task2/assets/regression.save').resolve()
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:

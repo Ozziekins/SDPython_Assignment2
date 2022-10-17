@@ -130,3 +130,59 @@ Trace:     Traceback (most recent call last):
                result[mask] = op(xrav[mask], yrav[mask])
            TypeError: unsupported operand type(s) for -: 'str' and 'str'
 
+Date:      2022-10-18 01:42:12.456771
+Type:      <class 'FileNotFoundError'>
+Message:   [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+Trace:     Traceback (most recent call last):
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/Services/error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/test.py", line 62, in get_data
+               DurationTrainer().train(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/ML/DurationTrainer.py", line 40, in train
+               joblib.dump(self._model, _modelPath)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/joblib/numpy_pickle.py", line 552, in dump
+               with open(filename, 'wb') as f:
+           FileNotFoundError: [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+
+Date:      2022-10-18 01:48:58.037476
+Type:      <class 'FileNotFoundError'>
+Message:   [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+Trace:     Traceback (most recent call last):
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/Services/error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/test.py", line 62, in get_data
+               DurationTrainer().train(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/ML/DurationTrainer.py", line 40, in train
+               joblib.dump(self._model, _modelPath)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/joblib/numpy_pickle.py", line 552, in dump
+               with open(filename, 'wb') as f:
+           FileNotFoundError: [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+
+Date:      2022-10-18 01:51:02.587173
+Type:      <class 'FileNotFoundError'>
+Message:   [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+Trace:     Traceback (most recent call last):
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/Services/error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/test.py", line 62, in get_data
+               DurationTrainer().train(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/ML/DurationTrainer.py", line 40, in train
+               joblib.dump(self._model, _modelPath)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/joblib/numpy_pickle.py", line 552, in dump
+               with open(filename, 'wb') as f:
+           FileNotFoundError: [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+
+Date:      2022-10-18 02:02:04.434392
+Type:      <class 'FileNotFoundError'>
+Message:   [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+Trace:     Traceback (most recent call last):
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/Services/error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/fetch.py", line 61, in get_data
+               DurationTrainer().train(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/ML/DurationTrainer.py", line 40, in train
+               joblib.dump(self._model, _modelPath)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/joblib/numpy_pickle.py", line 552, in dump
+               with open(filename, 'wb') as f:
+           FileNotFoundError: [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+

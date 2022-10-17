@@ -29,7 +29,6 @@ def aggregate_data(data):
     aggregate_df['duration'] = (aggregate_df['session_end'] - aggregate_df['session_start']).dt.seconds
     return aggregate_df
 
-
 @error_logger
 def get_data():
     interval = 300

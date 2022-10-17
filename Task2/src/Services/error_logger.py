@@ -5,7 +5,7 @@ import traceback
 from io import StringIO
 from pathlib import Path
 
-_Path = (Path(__file__).parent / '../../../assets/error_log.txt').resolve()
+_Path = (Path(__file__).parent / '../../assets/error_log.txt').resolve()
 
 
 def handle_indent(value_to_indent):

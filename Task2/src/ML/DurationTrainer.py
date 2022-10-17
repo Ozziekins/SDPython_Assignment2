@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler
 import joblib
 import os.path
 
-_modelPath = (Path(__file__).parent / '../../../assets/regressorModel.save').resolve()
+_modelPath = (Path(__file__).parent / '../../../Task2/assets/regressorModel.save').resolve()
 
 
 class DurationTrainer:
