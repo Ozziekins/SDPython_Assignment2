@@ -31,7 +31,7 @@ class AddAuditorium(ConsoleAction):
             print("Enter (capacity, number, air conditioner- yes/no):")
             args = re.search("([1-9][0-9]+) ([0-9]+) (yes|no)", input())
             if not args:
-                raise ValueError
+                raise ValueError("Incorrect input")
 
             capacity, number, air_conditioner = int(args.group(1)), args.group(2), True if args.group(
                 3) == 'yes' else False
@@ -133,16 +133,16 @@ class Dump(ConsoleAction):
             if choice == 1:
                 for i in institutions:
                     i.save_to_file()
-                    print('Successfully saved!')
+                    print(f'Successfully saved {i.get_name()}.json!')
             else:
                 print("Enter file name:")
                 name = str(input())
                 print(name)
                 with open(name, 'r') as file:
                     f = file.read()
-                    inst = jsonpickle.decode(f)
-                    institutions.append(inst)
-                    print('Successfully loaded institution!')
+                    i = jsonpickle.decode(f)
+                    institutions.append(i)
+                    print(f'Successfully loaded institution {i.get_name()}!')
         except (ValueError, FileNotFoundError, Exception):
             print('Incorrect choice input. Please, try again!')
 
