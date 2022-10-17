@@ -1,0 +1,30 @@
+Date:      2022-10-17 19:34:40.923919
+Type:      <class 'Exception'>
+Message:   
+Trace:     Traceback (most recent call last):
+             File "C:\Users\emiol\PycharmProjects\SDPython_Assignment2\src\Task2\Services\error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "C:\Users\emiol\PycharmProjects\SDPython_Assignment2\src\Task2\test.py", line 40, in get_data
+               raise Exception
+           Exception
+
+Date:      2022-10-17 19:36:23.633488
+Type:      <class 'Exception'>
+Message:   
+Trace:     Traceback (most recent call last):
+             File "C:\Users\emiol\PycharmProjects\SDPython_Assignment2\src\Task2\Services\error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "C:\Users\emiol\PycharmProjects\SDPython_Assignment2\src\Task2\test.py", line 40, in get_data
+               raise Exception
+           Exception
+
+Date:      2022-10-17 19:37:07.763466
+Type:      <class 'Exception'>
+Message:   
+Trace:     Traceback (most recent call last):
+             File "C:\Users\emiol\PycharmProjects\SDPython_Assignment2\src\Task2\Services\error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "C:\Users\emiol\PycharmProjects\SDPython_Assignment2\src\Task2\test.py", line 40, in get_data
+               raise Exception
+           Exception
+
