@@ -1,8 +1,18 @@
 services:
   db:
-      image: postgres
-      ports:
-        - "5432:5432"
-      environment:
-         POSTGRES_PASSWORD: example
-         POSTGRES_DB: 'app'
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: 'app'
+      network_mode: 'host'
+  app:
+    image: task2
+    build: ./
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
+    network_mode: 'host'
