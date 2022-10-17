@@ -25,9 +25,9 @@ def statsFor7Days():
     num_days = today - first_day
 
     if week_prior < first_day:
-        print(f"It has only been {num_days} since we started our server. However, we will send the report for this period.")
+        print(f"It has only been {int(num_days / pd.Timedelta('1 day'))} days since we started our server. However, we will send the report for this period.")
 
-    seven_day_df = df.loc[(df["just_date"] >= week_prior) & (df["just_date"] < today)]
+    df = df.loc[(df["just_date"] >= week_prior) & (df["just_date"] < today)]
     total_sessions = df["session_id"].count()
 
     df["duration"] = pd.to_timedelta(df["duration"], unit="s")
@@ -36,7 +36,7 @@ def statsFor7Days():
 
     sum_of_hours = round(df["duration"].sum() / pd.Timedelta("1 hour"), 2)
 
-    summaryText = f"""Statistics for the past 7 days:
+    summaryText = f"""Statistics for the past week:
         Total sessions : {total_sessions} 
         Average time spent per session : {average_time_per_session} min
         Sum of hours spent by all users : {sum_of_hours} hours \n"""
@@ -53,8 +53,9 @@ def isSuperUser(userID, df):
     else:
         return "No"
 
+
 def printUserSummary():
-    # 07393db8-e059-4cbd-b16f-88ab2019f045
+    # 413f3a66-ca86-4204-ab62-53a581d7495b
     userID = input("Enter user id: \n")
 
     df = pd.read_sql_query(f"""select * from public."AggregateEntries" where client_user_id='{userID}';""",
@@ -62,7 +63,26 @@ def printUserSummary():
 
     while True:
         if userID in set(df['client_user_id']):
+            df["just_date"] = df["session_start"].dt.date
+
+            # 2022-09-02 : 2022-09-06
+            interval_string = input("Enter period (yyyy-mm-dd : yyyy-mm-dd): \n")
+
             df["duration"] = pd.to_timedelta(df["duration"], unit="s")
+
+            if interval_string != "":
+                try:
+                    start, end = (x.strip() for x in interval_string.split(':'))
+                except ValueError:
+                    print("Incorrect data format is given in the bracket (yyyy-mm-dd : yyyy-mm-dd)\nTry again:\n")
+                    continue
+                    # raise ValueError("Incorrect data format is given in the bracket (yyyy-mm-dd : yyyy-mm-dd)")
+                #     1998-65-67;
+
+                start_date = datetime.strptime(start, "%Y-%m-%d").date()
+                end_date = datetime.strptime(end, "%Y-%m-%d").date()
+
+                df = df.loc[(df["just_date"] >= start_date) & (df["just_date"] <= end_date)]
 
             # df.query(f"client_user_id == '{userID}'", inplace=True)
             num_sessions = df["session_id"].count()
@@ -73,14 +93,13 @@ def printUserSummary():
 
             average_per_session = round(df["duration"].mean() / pd.Timedelta('1 minute'), 2)
 
-            df.sort_values(by="session_start", ascending=False)
-            recent_session = df["just_date"].iat[0]
+            recent_session = df.sort_values(by="session_start", ascending=False)["just_date"].iat[0]
 
-            most_device = df["device"].mode().values
+            most_device = df["device"].mode().values[0]
 
             devices = df["device"].unique()
 
-            num_bad_sessions = totalNumberOfBadSessions(userID, df)
+            num_bad_sessions = totalNumberOfBadSessions(df)
 
             estimated_next_session_time = nextSessionDuration(userID)
 
@@ -115,11 +134,17 @@ def printUserSummary():
             elif answer == "no":
                 break
             else:
-                print("Answer not recognized. Exiting\n")
+                print("Answer not recognized\n")
                 break
         else:
             print("User cannot be found")
-            userID = input("Try again, Enter user id: \n")
+            userID = input("Incorrect user id. Write 'exit' to exit or enter user id again: \n")
+
+            if userID == "exit":
+                break
+
+            df = pd.read_sql_query(f"""select * from public."AggregateEntries" where client_user_id='{userID}';""",
+                                   con=sqlProvider.engine)
 
 # def printSessionSummary():
 #     # b3aebc80-ff28-4569-bd18-2ace692f668e
@@ -129,12 +154,14 @@ def printUserSummary():
 def predictNextSessionDuration():
     userID = input("Enter user id: \n")
 
-    duration = nextSessionDuration(userID)
+    try:
+        duration = nextSessionDuration(userID)
+        print(f"The predicted session duration for user {userID} is {duration} hours \n")
+    except ValueError:
+        print("Incorrect user id\n")
 
-    print(f"The predicted session duration for user {userID} is {duration} \n")
 
-
-def totalNumberOfBadSessions(userID, df):
+def totalNumberOfBadSessions(df):
 
     formatted_df = df[['FPS_mean', 'FPS_std', 'RTT_mean', 'RTT_std', 'dropped_frames_mean',
                             'dropped_frames_std', 'dropped_frames_max']]
@@ -175,6 +202,8 @@ def fetchAndUpdateData():
 
     if int(cond < 5):
         print("Everything is up to date!\n")
+    else:
+        print("Refreshing...\n")
 
 
 def topFiveUsers():
@@ -200,25 +229,31 @@ def saveToFile(data, file_name):
 def exitSession():
     summaryText = statsFor7Days()
 
-    saveSummary = input("Save summary ? (yes/no)\n")
-    if saveSummary == "yes":
-        saveToFile(summaryText, "summary")
-    elif saveSummary == "no":
-        pass
-    else:
-        saveSummary = input("Answer not recognized. Do you want to save the summary? (yes/no) ")
+    saveSummary = input("Save summary? (yes/no)\n")
+
+    while True:
+        if saveSummary == "yes":
+            saveToFile(summaryText, "summary")
+            break
+        elif saveSummary == "no":
+            break
+        else:
+            saveSummary = input("Answer not recognized. Do you want to save the summary? (yes/no)\n")
 
 
 def begin():
     while True:
-        choice = int(input("""Choose one operation from below :
+        try:
+            choice = int(input("""Choose one operation from below :
             1 : Get status for the past 7 days
             2 : Print user summary 
             3 : Predict user next session duration
             4 : Fetch new data and update users data and ML model
             5 : Get top 5 users based on time spent gaming
             6 : Exit program \n"""))
-
+        except ValueError:
+            print("Incorrect number. Try again:\n")
+            continue
         if choice == 1:
             statsFor7Days()
         elif choice == 2:
@@ -231,10 +266,8 @@ def begin():
             topFiveUsers()
         elif choice == 6:
             exitSession()
+            exit()
             break
         else:
-            choice = int(input("Incorrect choice, try again \n"))
+            print("Incorrect choice, try again \n")
 
-
-if __name__ == "__main__":
-    begin()
