@@ -5,6 +5,7 @@ from .Base import Base
 class AggregateEntry(Base):
     __tablename__ = "AggregateEntries"
 
+    count = Column(Integer)
     id = Column(Integer, primary_key=True)
     client_user_id = Column(String)
     session_id = Column(String)

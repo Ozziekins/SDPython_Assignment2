@@ -13,7 +13,7 @@ from threading import Thread
 
 def aggregate_data(data):
     agg = {
-        'timestamp': ['min', 'max'],
+        'timestamp': ['min', 'max', 'size'],
         'dropped_frames': ['min', 'max', 'mean', 'std'],
         'FPS': ['min', 'max', 'mean', 'std'],
         'RTT': ['min', 'max', 'mean', 'std'],
@@ -21,7 +21,7 @@ def aggregate_data(data):
         'device': lambda x: pd.Series.mode(x)
     }
     aggregate_df = data.groupby(['client_user_id', 'session_id'], as_index=False).agg(agg)
-    aggregate_df.columns = ['client_user_id', 'session_id', 'session_start', 'session_end', 'dropped_frames_min',
+    aggregate_df.columns = ['client_user_id', 'session_id', 'session_start', 'session_end', 'count', 'dropped_frames_min',
                             'dropped_frames_max', 'dropped_frames_mean', 'dropped_frames_std',
                             'FPS_min', 'FPS_max', 'FPS_mean', 'FPS_std', 'RTT_min', 'RTT_max',
                             'RTT_mean', 'RTT_std', 'bitrate_min', 'bitrate_max', 'bitrate_mean', 'bitrate_std',
@@ -56,7 +56,7 @@ def get_data():
                     session.commit()
                 DurationTrainer().train(
                     df.drop(['client_user_id', 'session_id', 'session_start', 'dropped_frames_std', 'dropped_frames_max',
-                             'session_end',  'device'], axis=1))
+                             'session_end',  'device', 'count'], axis=1))
                 loaded_day.train_date = datetime.today()
                 session.commit()
             time_end = perf_counter()
