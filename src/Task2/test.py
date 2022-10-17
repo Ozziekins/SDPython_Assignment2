@@ -3,12 +3,14 @@ from Services.Files import Files
 from SqlProvider import SqlProvider
 from sqlalchemy.orm import sessionmaker
 import pandas as pd
-from ML.DurationTrainer import DurationTrainer, DurationPredict
+from ML.DurationTrainer import DurationTrainer
 from Models import LoadedDay
 from time import perf_counter, sleep
 from sqlalchemy import desc, func
 from ML.stream_quality import QualityPredictor
 from threading import Thread
+import pandas as pd
+from urllib.request import Request, urlopen
 
 
 def aggregate_data(data):
@@ -31,6 +33,7 @@ def aggregate_data(data):
 
 
 def get_data():
+    interval = 60
     sql_provider = SqlProvider()
     sql_provider.create_tables()
     Session = sessionmaker(sql_provider.engine)
@@ -45,9 +48,12 @@ def get_data():
         for file_date, file_id in sim:
             time_start = perf_counter()
             if file_id is not None:
-                download_url = f"https://drive.google.com/uc?id={file_id}"
+                req = Request(f"https://drive.google.com/uc?id={file_id}")
+                req.add_header('User-Agent',
+                               'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:77.0) Gecko/20100101 Firefox/77.0')
+                content = urlopen(req)
                 loaded_day = session.query(LoadedDay).filter(LoadedDay.file_date == file_date).first()
-                df = pd.read_csv(download_url, index_col=False, parse_dates=['timestamp'])
+                df = pd.read_csv(content, index_col=False, parse_dates=['timestamp'])
                 df = aggregate_data(df)
                 if loaded_day is None:
                     df.to_sql('AggregateEntries', con=sql_provider.engine, if_exists='append', index=False)
@@ -60,8 +66,8 @@ def get_data():
                 loaded_day.train_date = datetime.today()
                 session.commit()
             time_end = perf_counter()
-            if (time_end - time_start) > 120:
-                sleep(time_end - time_start - 30)
+            if (time_end - time_start) < interval:
+                sleep(interval - (time_end - time_start))
 
 
 def first():
@@ -83,8 +89,7 @@ def first():
                  'bitrate_max',
                  'bitrate_mean',
                  'bitrate_std'])
-    print(test.shape)
-    print(DurationPredict(test))
+    print(DurationTrainer().predict(test))
 
 
 t1 = Thread(target=first)
