@@ -5,9 +5,8 @@ from .AggregateEntry import AggregateEntry
 
 
 __all__ = [
-    Base,
-    Entry,
-    LoadedDay,
-    LoadedDay,
-    AggregateEntry
+    "Base",
+    "Entry",
+    "LoadedDay",
+    "AggregateEntry"
 ]
