@@ -1,6 +1,6 @@
 from datetime import time
 
-from Task1.Exceptions import ActivityOutOfRangeException
+from Exceptions import ActivityOutOfRangeException
 
 
 class Activity:

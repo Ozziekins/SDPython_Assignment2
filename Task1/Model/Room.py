@@ -1,5 +1,5 @@
-from Task1.Model.Activity import Activity
-from Task1.Exceptions import ActivitiesOverlapException, ActivityOutOfRangeException
+from Model.Activity import Activity
+from Exceptions import ActivitiesOverlapException, ActivityOutOfRangeException
 from datetime import  datetime
 
 

@@ -1,6 +1,6 @@
-from Task1.Exceptions import RoomNotFoundException
-from Task1.Model.Room import Klassroom, Room
-from Task1.Model.Room import LectureAuditorium
+from Exceptions import RoomNotFoundException
+from Model.Room import Klassroom, Room
+from Model.Room import LectureAuditorium
 import jsonpickle
 
 

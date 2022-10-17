@@ -1,5 +1,5 @@
-from Task1.ConsoleAction import ConsoleAction
-from Task1.Model.EdInstitution import EdInstitution
+from ConsoleAction import ConsoleAction
+from Model.EdInstitution import EdInstitution
 
 
 class Console:

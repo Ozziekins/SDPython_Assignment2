@@ -2,8 +2,8 @@ import sys
 from datetime import time
 import jsonpickle
 
-from Task1.Exceptions import *
-from Task1.Model.EdInstitution import EdInstitution
+from Exceptions import *
+from Model.EdInstitution import EdInstitution
 from Utils import get_institution, print_summary
 from Model.Room import Klassroom, LectureAuditorium
 from Model.Activity import Activity
