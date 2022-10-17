@@ -133,14 +133,16 @@ class Dump(ConsoleAction):
             if choice == 1:
                 for i in institutions:
                     i.save_to_file()
+                    print('Successfully saved!')
             else:
                 print("Enter file name:")
                 name = str(input())
                 print(name)
                 with open(name, 'r') as file:
                     f = file.read()
-                    institutions.append(jsonpickle.decode(f))
-            print('Successfully saved!')
+                    inst = jsonpickle.decode(f)
+                    institutions.append(inst)
+                    print('Successfully loaded institution!')
         except (ValueError, FileNotFoundError, Exception):
             print('Incorrect choice input. Please, try again!')
 
