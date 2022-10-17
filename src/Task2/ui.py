@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
 from datetime import datetime, date, timedelta
-from src import SqlProvider, DurationPredict, QualityPredictor
+from src import SqlProvider, DurationTrainer, QualityPredictor
 
 sqlProvider = SqlProvider()
 
@@ -156,7 +156,7 @@ def nextSessionDuration(userID):
     df_mean = df[["dropped_frames_min", "dropped_frames_mean", "FPS_min", "FPS_max", "FPS_mean", "FPS_std", "RTT_min",
                   "RTT_max", "RTT_mean", "RTT_std", "bitrate_min", "bitrate_max", "bitrate_mean", "bitrate_std"]].mean()
 
-    next_session_duration = DurationPredict(df_mean)
+    next_session_duration = DurationTrainer().predict(df_mean)
 
     return next_session_duration
 

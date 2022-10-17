@@ -1,7 +1,8 @@
-from .Task2 import SqlProvider, DurationPredict, QualityPredictor
+from .Task2 import SqlProvider, QualityPredictor, Models, DurationTrainer
 
 __all__ = [
     "SqlProvider",
-    "DurationPredict",
-    "QualityPredictor"
+    "QualityPredictor",
+    Models,
+    DurationTrainer
 ]
