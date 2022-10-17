@@ -6,9 +6,9 @@ import shutup
 shutup.please()
 
 if __name__ == "__main__":
-    t1 = Thread(target=begin)
-    t2 = Thread(target=get_data)
-    t1.start()
-    t2.start()
-    t1.join()
-    t2.join()
+    th = Thread(target=get_data, daemon=True)
+
+    # function is running on the main thread
+    begin()
+    th.start()
+    th.join()

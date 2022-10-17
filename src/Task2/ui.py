@@ -266,6 +266,7 @@ def begin():
             topFiveUsers()
         elif choice == 6:
             exitSession()
+            exit()
             break
         else:
             print("Incorrect choice, try again \n")
