@@ -12,7 +12,7 @@ class Console:
                         ' 5 : Dump University data\n' \
                         ' 6 : Exit program\n'
         self._institutions = institutons if institutons else list()
-        self.actions = actions
+        self._actions = actions
 
     def choose_action(self):
         print(self._message)
@@ -20,7 +20,7 @@ class Console:
             choice = int(input()) - 1
             if choice < 0 or choice > 5:
                 raise ValueError
-            self.actions[choice].execute(self._institutions)
+            self._actions[choice].execute(self._institutions)
         except ValueError:
             print('Incorrect choice input. Please, try again!\n')
 
