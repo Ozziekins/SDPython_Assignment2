@@ -6,11 +6,10 @@ from ML.DurationTrainer import DurationTrainer
 from Models import LoadedDay
 from time import perf_counter, sleep
 from sqlalchemy import desc, func
-from ML.stream_quality import QualityPredictor
 from threading import Thread
 import pandas as pd
 from urllib.request import Request, urlopen
-
+import shutup
 from src.Task2.Services import logger, error_logger
 
 
@@ -95,6 +94,7 @@ def first():
     print(DurationTrainer().predict(test))
 
 
+shutup.please()
 t1 = Thread(target=first)
 t2 = Thread(target=get_data)
 t1.start()
