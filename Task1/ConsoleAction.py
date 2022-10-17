@@ -46,7 +46,7 @@ class AddAuditorium(ConsoleAction):
                 print("Successfully added LectureAuditorium!")
 
         except (UniversityNotFoundException, ValueError) as error:
-            print(repr(error))
+            print(error)
 
 
 class AddActivityKlassRoom(ConsoleAction):
@@ -57,12 +57,12 @@ class AddActivityKlassRoom(ConsoleAction):
             print("Enter institution name :")
             inst = get_institution(institutions)
 
-            print("enter the desired klassroom number :")
+            print("Enter the desired klassroom number :")
             activity_room = str(input())
 
             k_room = inst.get_klassroom(activity_room)
 
-            print("enter activity name:")
+            print("Enter activity name:")
             activity_name = str(input())
 
             print("Enter the slot that you desire in format HH:MM - HH:MM :")
@@ -79,7 +79,7 @@ class AddActivityKlassRoom(ConsoleAction):
 
         except (ActivityOutOfRangeException, ActivitiesOverlapException, UniversityNotFoundException,
                 RoomNotFoundException) as ex:
-            print(repr(ex))
+            print(ex)
         except(IndexError):
             print("Incorrect input format. please try aagain.")
 
@@ -91,12 +91,12 @@ class AddActivityAuditorium(ConsoleAction):
             print("Enter institution name :")
             inst = get_institution(institutions)
 
-            print("enter the desired Auditorium number :")
+            print("Enter the desired Auditorium number :")
             activity_auditorium = str(input())
 
             aud_room = inst.get_auditorium(activity_auditorium)
 
-            print("enter activity name:")
+            print("Enter activity name:")
             activity_name = str(input())
 
             print("Enter the slot that you desire in format HH:MM - HH:MM :")
@@ -114,7 +114,7 @@ class AddActivityAuditorium(ConsoleAction):
 
         except (ActivityOutOfRangeException, ActivitiesOverlapException, UniversityNotFoundException,
                 RoomNotFoundException) as ex:
-            print(repr(ex))
+            print(ex)
         except(IndexError):
             print("Incorrect input format. please try aagain.")
 
