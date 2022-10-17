@@ -1,5 +1,5 @@
-pandas~=1.5.0
-SQLAlchemy~=1.4.41
+pandas~=1.4.2
+SQLAlchemy~=1.4.32
 psycopg2~=2.9.4
 google~=3.0.0
 torch~=1.12.1
@@ -7,3 +7,4 @@ joblib~=1.2.0
 numpy~=1.23.4
 sklearn~=0.0
 scikit-learn~=1.0.2
+shutup~=0.2.0
