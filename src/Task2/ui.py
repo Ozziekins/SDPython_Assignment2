@@ -2,7 +2,9 @@ import pandas as pd
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
 from datetime import datetime, date, timedelta
-from src import SqlProvider, QualityPredictor, DurationTrainer
+from SqlProvider import SqlProvider
+from ML.DurationTrainer import DurationTrainer
+from ML.stream_quality import QualityPredictor
 
 sqlProvider = SqlProvider()
 
@@ -17,7 +19,6 @@ def statsFor7Days():
     df.sort_values(by="session_start")
     df["just_date"] = df["session_start"].dt.date
     today = df["just_date"].iat[-1]
-    print(today)
     week_prior = today - timedelta(weeks=1)
     first_day = date(2022, 9, 1)
 
@@ -156,7 +157,9 @@ def nextSessionDuration(userID):
     df_mean = df[["dropped_frames_min", "dropped_frames_mean", "FPS_min", "FPS_max", "FPS_mean", "FPS_std", "RTT_min",
                   "RTT_max", "RTT_mean", "RTT_std", "bitrate_min", "bitrate_max", "bitrate_mean", "bitrate_std"]].mean()
 
-    next_session_duration = DurationTrainer.predict(df_mean)
+    duration = DurationTrainer().predict(df_mean.to_frame().transpose())
+
+    next_session_duration = round(pd.to_timedelta(duration, unit="s") / pd.Timedelta("1 hour"), 2)
 
     return next_session_duration
 
