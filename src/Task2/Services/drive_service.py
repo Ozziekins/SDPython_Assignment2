@@ -1,10 +1,8 @@
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from .auth_decorator import auth_decorator
 
 
-@auth_decorator
-def get_file_id(creds, file_name):
+def get_file_id(file_name):
     """
     The service for getting the id of the file
     in a folder with a particular file_name
@@ -43,7 +41,7 @@ def get_file_id(creds, file_name):
 
         return list_of_files
 
-    service = build('drive', 'v3', credentials=creds)
+    service = build('drive', 'v3', developerKey="AIzaSyDHibglTrl6yLQ3YT_RO-FaOSSmvpGZN38")
     try:
         files = list_files()
         if len(files) == 0:
