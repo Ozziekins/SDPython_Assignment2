@@ -1,0 +1,188 @@
+Date:      2022-10-17 19:34:40.923919
+Type:      <class 'Exception'>
+Message:   
+Trace:     Traceback (most recent call last):
+             File "C:\Users\emiol\PycharmProjects\SDPython_Assignment2\src\Task2\Services\error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "C:\Users\emiol\PycharmProjects\SDPython_Assignment2\src\Task2\test.py", line 40, in get_data
+               raise Exception
+           Exception
+
+Date:      2022-10-17 19:36:23.633488
+Type:      <class 'Exception'>
+Message:   
+Trace:     Traceback (most recent call last):
+             File "C:\Users\emiol\PycharmProjects\SDPython_Assignment2\src\Task2\Services\error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "C:\Users\emiol\PycharmProjects\SDPython_Assignment2\src\Task2\test.py", line 40, in get_data
+               raise Exception
+           Exception
+
+Date:      2022-10-17 19:37:07.763466
+Type:      <class 'Exception'>
+Message:   
+Trace:     Traceback (most recent call last):
+             File "C:\Users\emiol\PycharmProjects\SDPython_Assignment2\src\Task2\Services\error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "C:\Users\emiol\PycharmProjects\SDPython_Assignment2\src\Task2\test.py", line 40, in get_data
+               raise Exception
+           Exception
+
+Date:      2022-10-17 20:55:33.676945
+Type:      <class 'sqlalchemy.exc.OperationalError'>
+Message:   (psycopg2.OperationalError) terminating connection due to administrator command
+           server closed the connection unexpectedly
+           	This probably means the server terminated abnormally
+           	before or while processing the request.
+           
+           [SQL: SELECT "LoadedDays".id AS "LoadedDays_id", "LoadedDays".file_date AS "LoadedDays_file_date", "LoadedDays".fetch_date AS "LoadedDays_fetch_date", "LoadedDays".train_date AS "LoadedDays_train_date" 
+           FROM "LoadedDays" 
+           WHERE "LoadedDays".file_date = %(file_date_1)s 
+            LIMIT %(param_1)s]
+           [parameters: {'file_date_1': datetime.datetime(2022, 9, 8, 0, 0), 'param_1': 1}]
+           (Background on this error at: https://sqlalche.me/e/14/e3q8)
+Trace:     Traceback (most recent call last):
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1900, in _execute_context
+               self.dialect.do_execute(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 736, in do_execute
+               cursor.execute(statement, parameters)
+           psycopg2.OperationalError: terminating connection due to administrator command
+           server closed the connection unexpectedly
+           	This probably means the server terminated abnormally
+           	before or while processing the request.
+           
+           
+           The above exception was the direct cause of the following exception:
+           
+           Traceback (most recent call last):
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/src/Task2/Services/error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/src/Task2/test.py", line 58, in get_data
+               df = pd.read_csv(content, index_col=False, parse_dates=['timestamp'])
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2823, in first
+               return self.limit(1)._iter().first()
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2907, in _iter
+               result = self.session.execute(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 1712, in execute
+               result = conn._execute_20(statement, params or {}, execution_options)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1705, in _execute_20
+               return meth(self, args_10style, kwargs_10style, execution_options)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/sqlalchemy/sql/elements.py", line 333, in _execute_on_connection
+               return connection._execute_clauseelement(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1572, in _execute_clauseelement
+               ret = self._execute_context(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1943, in _execute_context
+               self._handle_dbapi_exception(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 2124, in _handle_dbapi_exception
+               util.raise_(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/sqlalchemy/util/compat.py", line 208, in raise_
+               raise exception
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1900, in _execute_context
+               self.dialect.do_execute(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 736, in do_execute
+               cursor.execute(statement, parameters)
+           sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) terminating connection due to administrator command
+           server closed the connection unexpectedly
+           	This probably means the server terminated abnormally
+           	before or while processing the request.
+           
+           [SQL: SELECT "LoadedDays".id AS "LoadedDays_id", "LoadedDays".file_date AS "LoadedDays_file_date", "LoadedDays".fetch_date AS "LoadedDays_fetch_date", "LoadedDays".train_date AS "LoadedDays_train_date" 
+           FROM "LoadedDays" 
+           WHERE "LoadedDays".file_date = %(file_date_1)s 
+            LIMIT %(param_1)s]
+           [parameters: {'file_date_1': datetime.datetime(2022, 9, 8, 0, 0), 'param_1': 1}]
+           (Background on this error at: https://sqlalche.me/e/14/e3q8)
+
+Date:      2022-10-17 22:43:16.824426
+Type:      <class 'TypeError'>
+Message:   unsupported operand type(s) for -: 'str' and 'str'
+Trace:     Traceback (most recent call last):
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/pandas/core/ops/array_ops.py", line 163, in _na_arithmetic_op
+               result = func(left, right)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/pandas/core/computation/expressions.py", line 239, in evaluate
+               return _evaluate(op, op_str, a, b)  # type: ignore[misc]
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/pandas/core/computation/expressions.py", line 69, in _evaluate_standard
+               return op(a, b)
+           TypeError: unsupported operand type(s) for -: 'str' and 'str'
+           
+           During handling of the above exception, another exception occurred:
+           
+           Traceback (most recent call last):
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/src/Task2/Services/error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/src/Task2/test.py", line 58, in get_data
+               df = aggregate_data(df)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/src/Task2/test.py", line 31, in aggregate_data
+               aggregate_df['duration'] = (aggregate_df['session_end'] - aggregate_df['session_start']).dt.seconds
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/pandas/core/ops/common.py", line 70, in new_method
+               return method(self, other)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/pandas/core/arraylike.py", line 108, in __sub__
+               return self._arith_method(other, operator.sub)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/pandas/core/series.py", line 5639, in _arith_method
+               return base.IndexOpsMixin._arith_method(self, other, op)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/pandas/core/base.py", line 1295, in _arith_method
+               result = ops.arithmetic_op(lvalues, rvalues, op)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/pandas/core/ops/array_ops.py", line 222, in arithmetic_op
+               res_values = _na_arithmetic_op(left, right, op)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/pandas/core/ops/array_ops.py", line 170, in _na_arithmetic_op
+               result = _masked_arith_op(left, right, op)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/pandas/core/ops/array_ops.py", line 108, in _masked_arith_op
+               result[mask] = op(xrav[mask], yrav[mask])
+           TypeError: unsupported operand type(s) for -: 'str' and 'str'
+
+Date:      2022-10-18 01:42:12.456771
+Type:      <class 'FileNotFoundError'>
+Message:   [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+Trace:     Traceback (most recent call last):
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/Services/error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/test.py", line 62, in get_data
+               DurationTrainer().train(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/ML/DurationTrainer.py", line 40, in train
+               joblib.dump(self._model, _modelPath)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/joblib/numpy_pickle.py", line 552, in dump
+               with open(filename, 'wb') as f:
+           FileNotFoundError: [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+
+Date:      2022-10-18 01:48:58.037476
+Type:      <class 'FileNotFoundError'>
+Message:   [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+Trace:     Traceback (most recent call last):
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/Services/error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/test.py", line 62, in get_data
+               DurationTrainer().train(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/ML/DurationTrainer.py", line 40, in train
+               joblib.dump(self._model, _modelPath)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/joblib/numpy_pickle.py", line 552, in dump
+               with open(filename, 'wb') as f:
+           FileNotFoundError: [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+
+Date:      2022-10-18 01:51:02.587173
+Type:      <class 'FileNotFoundError'>
+Message:   [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+Trace:     Traceback (most recent call last):
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/Services/error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/test.py", line 62, in get_data
+               DurationTrainer().train(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/ML/DurationTrainer.py", line 40, in train
+               joblib.dump(self._model, _modelPath)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/joblib/numpy_pickle.py", line 552, in dump
+               with open(filename, 'wb') as f:
+           FileNotFoundError: [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+
+Date:      2022-10-18 02:02:04.434392
+Type:      <class 'FileNotFoundError'>
+Message:   [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+Trace:     Traceback (most recent call last):
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/Services/error_logger.py", line 44, in wrapper
+               result = func(*args, **kwargs)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/fetch.py", line 61, in get_data
+               DurationTrainer().train(
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/Task2/src/ML/DurationTrainer.py", line 40, in train
+               joblib.dump(self._model, _modelPath)
+             File "/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/venv/lib/python3.10/site-packages/joblib/numpy_pickle.py", line 552, in dump
+               with open(filename, 'wb') as f:
+           FileNotFoundError: [Errno 2] No such file or directory: '/home/ozzie_kins/Documents/Masters1Y1S/SDPython/SDPython_Assignment2/assets/regressorModel.save'
+
