@@ -1,8 +1,9 @@
-from .DurationTrainer import DurationTrainer
+from .DurationTrainer import DurationTrainer, DurationPredict
 from .stream_quality import QualityPredictor
 
 
 __all__ = [
-    DurationTrainer,
-    QualityPredictor
+    "DurationTrainer",
+    "DurationPredict",
+    "QualityPredictor"
 ]

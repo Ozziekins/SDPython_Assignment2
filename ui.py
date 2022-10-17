@@ -1,11 +1,8 @@
-from sqlalchemy.orm import Session
-from src import SqlProvider
-from src import Entry
 import pandas as pd
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
 from datetime import datetime, date, timedelta
-from src import DurationPredict, QualityPredictor
+from src import SqlProvider, DurationPredict, QualityPredictor
 
 sqlProvider = SqlProvider()
 
@@ -19,7 +16,8 @@ def statsFor7Days():
 
     df.sort_values(by="session_start")
     df["just_date"] = df["session_start"].dt.date
-    today = df["just_date"].iat[0]
+    today = df["just_date"].iat[-1]
+    print(today)
     week_prior = today - timedelta(weeks=1)
     first_day = date(2022, 9, 1)
 
@@ -81,7 +79,7 @@ def printUserSummary():
 
             devices = df["device"].unique()
 
-            num_bad_sesssions = totalNumberOfBadSessions(userID, df)
+            num_bad_sessions = totalNumberOfBadSessions(userID, df)
 
             estimated_next_session_time = nextSessionDuration(userID)
 
@@ -104,7 +102,7 @@ def printUserSummary():
                     Most frequently used device : {most_device}
                     Devices used : {devices}
                     Average of : 1) Round trip time is {rtt} (RTT) 2) Frames per Second is {fps} 3) Dropped Frames is {dropped_frames} 4) bitrate is {bitrate}
-                    Total number of bad sessions (predicted using ML model): {num_bad_sesssions}
+                    Total number of bad sessions (predicted using ML model): {num_bad_sessions}
                     Estimated next session time : {estimated_next_session_time} hrs
                     Super user : {super_user}\n""")
 
@@ -167,9 +165,15 @@ def fetchAndUpdateData():
     df = pd.read_sql_query(f"""select * from public."LoadedDays";""", con=sqlProvider.engine)
 
     df["fetch_date"] = pd.to_datetime(df["fetch_date"])
-    df["just_date"] = df["timestamp"].dt.date
+    df["just_date"] = df["fetch_date"].dt.time
 
-    if df["just_date"].iloc[-1] <
+    interval = datetime.combine(date.today(), datetime.now().time()) - datetime.combine(date.today(), df["just_date"].iloc[-1])
+    cond = interval / pd.Timedelta('1 minute')
+
+    print(int(cond))
+
+    if int(cond < 5):
+        print("Everything is up to date!\n")
 
 
 def topFiveUsers():
