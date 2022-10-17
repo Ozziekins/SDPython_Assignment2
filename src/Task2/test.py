@@ -6,11 +6,9 @@ from ML.DurationTrainer import DurationTrainer
 from Models import LoadedDay
 from time import perf_counter, sleep
 from sqlalchemy import desc, func
-from threading import Thread
 import pandas as pd
 from urllib.request import Request, urlopen
-import shutup
-from Services import logger, error_logger
+from Services import error_logger
 
 
 def aggregate_data(data):
@@ -32,7 +30,6 @@ def aggregate_data(data):
     return aggregate_df
 
 
-@logger
 @error_logger
 def get_data():
     interval = 300
@@ -72,32 +69,4 @@ def get_data():
                 sleep(interval - (time_end - time_start))
 
 
-def first():
-    input("Enter user id")
-    test = pd.DataFrame(data=[
-        [-0.938268, -0.524444, 0.244128, -0.089892, -0.089892, -0.017157, -0.015607, 12, -0.524444, 0.244128, -0.089892,
-         -0.017157, -0.015607, 12]],
-        columns=['dropped_frames_min',
-                 'dropped_frames_mean',
-                 'FPS_min',
-                 'FPS_max',
-                 'FPS_mean',
-                 'FPS_std',
-                 'RTT_min',
-                 'RTT_max',
-                 'RTT_mean',
-                 'RTT_std',
-                 'bitrate_min',
-                 'bitrate_max',
-                 'bitrate_mean',
-                 'bitrate_std'])
-    print(DurationTrainer().predict(test))
 
-
-shutup.please()
-t1 = Thread(target=first)
-t2 = Thread(target=get_data)
-t1.start()
-t2.start()
-t1.join()
-t2.join()
