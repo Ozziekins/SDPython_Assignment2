@@ -14,11 +14,11 @@ session = Session()
 
 def statsFor7Days():
     # if today is earlier than start day - 7days, then print just stats for all the days since start with a note
-    df = pd.read_sql_query('select * from "Entries";', con=sqlProvider.engine)
-    df["timestamp"] = pd.to_datetime(df["timestamp"])
+    df = pd.read_sql_query('select * from "AggregateEntries";', con=sqlProvider.engine)
+    df["session_start"] = pd.to_datetime(df["session_start"])
 
-    df.sort_values(by="timestamp")
-    df["just_date"] = df["timestamp"].dt.date
+    df.sort_values(by="session_start")
+    df["just_date"] = df["session_start"].dt.date
     today = df["just_date"].iat[0]
     week_prior = today - timedelta(weeks=1)
     first_day = date(2022, 9, 1)
@@ -28,13 +28,16 @@ def statsFor7Days():
     if week_prior < first_day:
         print(f"It has only been {num_days} since we started our server. However, we will send the report for this period.")
 
-    total_sessions = df.session_id.nunique()
+    print(df.tail(5))
+    seven_day_df = df.loc[(df["just_date"] >= week_prior) & (df["just_date"] < today)]
+    print(seven_day_df.head(5))
+    total_sessions = df["session_id"].count()
 
-    sessions_time = df.groupby(["client_user_id", "session_id"])["timestamp"].agg(["max", "min"])
-    sessions_time["diff"] = sessions_time["max"] - sessions_time["min"]
-    average_time_per_session = round(sessions_time["diff"].mean() / pd.Timedelta('1 minute'), 2)
+    df["duration"] = pd.to_timedelta(df["duration"], unit="s")
 
-    sum_of_hours = round(sessions_time["diff"].sum() / pd.Timedelta('1 hour'), 2)
+    average_time_per_session = round(df["duration"].mean() / pd.Timedelta("1 minute"), 2)
+
+    sum_of_hours = round(df["duration"].sum() / pd.Timedelta("1 hour"), 2)
 
     summaryText = f"""Statistics for the past 7 days:
         Total sessions : {total_sessions} 
@@ -59,24 +62,23 @@ def printUserSummary():
     # 07393db8-e059-4cbd-b16f-88ab2019f045
     userID = input("Enter user id: \n")
 
-    df = pd.read_sql_query(f"""select * from public."Entries" where client_user_id='{userID}';""", con=sqlProvider.engine)
+    df = pd.read_sql_query(f"""select * from public."AggregateEntries" where client_user_id='{userID}';""",
+                           con=sqlProvider.engine)
 
     while True:
         if userID in set(df['client_user_id']):
-            df["timestamp"] = pd.to_datetime(df["timestamp"])
+            df["duration"] = pd.to_timedelta(df["duration"], unit="s")
 
             # df.query(f"client_user_id == '{userID}'", inplace=True)
-            num_sessions = df.session_id.nunique()
+            num_sessions = df["session_id"].count()
 
-            df.sort_values(by="timestamp")
-            df["just_date"] = df["timestamp"].dt.date
+            df.sort_values(by="session_start")
+            df["just_date"] = df["session_start"].dt.date
             first_session = df["just_date"].iat[0]
 
-            sessions_time = df.groupby("session_id")["timestamp"].agg(["max", "min"])
-            sessions_time["diff"] = sessions_time["max"] - sessions_time["min"]
-            average_per_session = round(sessions_time["diff"].mean() / pd.Timedelta('1 minute'), 2)
+            average_per_session = round(df["duration"].mean() / pd.Timedelta('1 minute'), 2)
 
-            df.sort_values(by="timestamp", ascending=False)
+            df.sort_values(by="session_start", ascending=False)
             recent_session = df["just_date"].iat[0]
 
             most_device = df["device"].mode().values
@@ -113,7 +115,8 @@ def printUserSummary():
             answer = input("Find another user ? (yes/no) \n")
             if answer == "yes":
                 userID = input("Enter user id: \n")
-                df = pd.read_sql_query(f"""select * from public."Entries" where client_user_id='{userID}';""", con=sqlProvider.engine)
+                df = pd.read_sql_query(f"""select * from public."AggregateEntries" where client_user_id='{userID}';""",
+                                       con=sqlProvider.engine)
             elif answer == "no":
                 break
             else:
@@ -129,19 +132,12 @@ def printUserSummary():
 
 def totalNumberOfBadSessions(userID, df):
 
-    agg = {
-        'FPS': ['mean', 'std'],
-        'RTT': ['mean', 'std'],
-        'dropped_frames': ['mean', 'std', 'max']
-    }
-    aggregate_df = df.groupby('session_id', as_index=False).agg(agg)
-    aggregate_df.columns = ['session_id', 'fps_mean', 'fps_std', 'rtt_mean', 'rtt_std', 'dropped_frames_mean',
-                            'dropped_frames_std', 'dropped_frames_max']
-    aggregate_df = aggregate_df.drop(columns=['session_id'])
+    formatted_df = df[['FPS_mean', 'FPS_std', 'RTT_mean', 'RTT_std', 'dropped_frames_mean',
+                            'dropped_frames_std', 'dropped_frames_max']]
 
     quality_predictor = QualityPredictor()
 
-    df = aggregate_df.apply(lambda x: quality_predictor.predict(x.to_frame().transpose()), axis=1)
+    df = formatted_df.apply(lambda x: quality_predictor.predict(x.to_frame().transpose()), axis=1)
     num = df.sum()
 
     return num
@@ -165,15 +161,13 @@ def fetchAndUpdateData():
 
 def topFiveUsers():
     # query our db by time spent and return the 5rows
-    df = pd.read_sql_query('select * from "Entries";', con=sqlProvider.engine)
-    df["timestamp"] = pd.to_datetime(df["timestamp"])
+    df = pd.read_sql_query('select * from "AggregateEntries";', con=sqlProvider.engine)
+    df["duration"] = pd.to_timedelta(df["duration"], unit="s")
 
-    sessions_time = df.groupby(["client_user_id", "session_id"])["timestamp"].agg(["max", "min"])
-    sessions_time["diff"] = sessions_time["max"] - sessions_time["min"]
-    sessions_time_total = sessions_time.groupby("client_user_id")["diff"].agg(["sum"])
-    sessions_time_total["days_spent_gaming"] = sessions_time_total["sum"].dt.components["days"]
-    sessions_time_total["hours_spent_gaming"] = sessions_time_total["sum"].dt.components["hours"]
-    sessions_time_total = sessions_time_total.sort_values(by="sum", ascending=False)
+    sessions_time = df.groupby(["client_user_id"])["duration"].agg(["sum"])
+    sessions_time["days_spent_gaming"] = sessions_time["sum"].dt.components["days"]
+    sessions_time["hours_spent_gaming"] = sessions_time["sum"].dt.components["hours"]
+    sessions_time_total = sessions_time.sort_values(by="sum", ascending=False)
     sessions_time_total = sessions_time_total.drop(columns=["sum"])
 
     top_users = sessions_time_total.head(5)

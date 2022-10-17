@@ -14,7 +14,7 @@ from threading import Thread
 def aggregate_data(data):
     agg = {
         'timestamp': ['min', 'max'],
-        'dropped_frames': ['min', 'mean'],
+        'dropped_frames': ['min', 'max', 'mean', 'std'],
         'FPS': ['min', 'max', 'mean', 'std'],
         'RTT': ['min', 'max', 'mean', 'std'],
         'bitrate': ['min', 'max', 'mean', 'std'],
@@ -22,7 +22,8 @@ def aggregate_data(data):
     }
     aggregate_df = data.groupby(['client_user_id', 'session_id'], as_index=False).agg(agg)
     aggregate_df.columns = ['client_user_id', 'session_id', 'session_start', 'session_end', 'dropped_frames_min',
-                            'dropped_frames_mean', 'FPS_min', 'FPS_max', 'FPS_mean', 'FPS_std', 'RTT_min', 'RTT_max',
+                            'dropped_frames_max', 'dropped_frames_mean', 'dropped_frames_std',
+                            'FPS_min', 'FPS_max', 'FPS_mean', 'FPS_std', 'RTT_min', 'RTT_max',
                             'RTT_mean', 'RTT_std', 'bitrate_min', 'bitrate_max', 'bitrate_mean', 'bitrate_std',
                             'device']
     aggregate_df['duration'] = (aggregate_df['session_end'] - aggregate_df['session_start']).dt.seconds
