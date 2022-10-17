@@ -28,9 +28,7 @@ def statsFor7Days():
     if week_prior < first_day:
         print(f"It has only been {num_days} since we started our server. However, we will send the report for this period.")
 
-    print(df.tail(5))
     seven_day_df = df.loc[(df["just_date"] >= week_prior) & (df["just_date"] < today)]
-    print(seven_day_df.head(5))
     total_sessions = df["session_id"].count()
 
     df["duration"] = pd.to_timedelta(df["duration"], unit="s")
@@ -49,9 +47,7 @@ def statsFor7Days():
 
 def isSuperUser(userID, df):
     # a user who has sessions time more than 60 min in a week
-    sessions_time = df.groupby("session_id")["timestamp"].agg(["max", "min"])
-    sessions_time["diff"] = sessions_time["max"] - sessions_time["min"]
-    total_session = sessions_time["diff"].sum() / pd.Timedelta('1 minute')
+    total_session = df["duration"].sum() / pd.Timedelta('1 minute')
 
     if total_session > 60:
         return "Yes"
@@ -87,14 +83,14 @@ def printUserSummary():
 
             num_bad_sesssions = totalNumberOfBadSessions(userID, df)
 
-            estimated_next_session_time = predictNextSessionDuration(userID)
+            estimated_next_session_time = nextSessionDuration(userID)
 
             super_user = isSuperUser(userID, df)
 
-            rtt = round(df["RTT"].mean(), 3)
-            fps = round(df["FPS"].mean(), 3)
-            dropped_frames = round(df["dropped_frames"].mean(), 3)
-            bitrate = round(df["bitrate"].mean(), 3)
+            rtt = round(df["RTT_mean"].mean(), 3)
+            fps = round(df["FPS_mean"].mean(), 3)
+            dropped_frames = round(df["dropped_frames_mean"].mean(), 3)
+            bitrate = round(df["bitrate_mean"].mean(), 3)
 
             # if no interval is given, then give entire summary of this user
             # interval = input("Enter period (yyyy/mm/dd - yyyy/mm/dd) : \n")
@@ -130,10 +126,21 @@ def printUserSummary():
 #     # b3aebc80-ff28-4569-bd18-2ace692f668e
 #     sessionID = input("Enter session id: \n")
 
+
+def predictNextSessionDuration():
+    userID = input("Enter user id: \n")
+
+    duration = nextSessionDuration(userID)
+
+    print(f"The predicted session duration for user {userID} is {duration} \n")
+
+
 def totalNumberOfBadSessions(userID, df):
 
     formatted_df = df[['FPS_mean', 'FPS_std', 'RTT_mean', 'RTT_std', 'dropped_frames_mean',
                             'dropped_frames_std', 'dropped_frames_max']]
+    formatted_df = formatted_df.rename(columns={'FPS_mean': 'fps_mean', 'FPS_std': 'fps_std', 'RTT_mean': 'rtt_mean',
+                                                'RTT_std': "rtt_std"})
 
     quality_predictor = QualityPredictor()
 
@@ -143,7 +150,7 @@ def totalNumberOfBadSessions(userID, df):
     return num
 
 
-def predictNextSessionDuration(userID):
+def nextSessionDuration(userID):
 
     df = pd.read_sql_query(f"""select * from public."AggregateEntries" where client_user_id='{userID}';""",
                            con=sqlProvider.engine)
@@ -152,6 +159,7 @@ def predictNextSessionDuration(userID):
                   "RTT_max", "RTT_mean", "RTT_std", "bitrate_min", "bitrate_max", "bitrate_mean", "bitrate_std"]].mean()
 
     next_session_duration = DurationPredict(df_mean)
+
     return next_session_duration
 
 

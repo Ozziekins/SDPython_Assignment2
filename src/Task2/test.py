@@ -55,7 +55,8 @@ def get_data():
                     session.add(loaded_day)
                     session.commit()
                 DurationTrainer().train(
-                    df.drop(['client_user_id', 'session_id', 'session_start', 'session_end', 'device'], axis=1))
+                    df.drop(['client_user_id', 'session_id', 'session_start', 'dropped_frames_std', 'dropped_frames_max',
+                             'session_end',  'device'], axis=1))
                 loaded_day.train_date = datetime.today()
                 session.commit()
             time_end = perf_counter()
