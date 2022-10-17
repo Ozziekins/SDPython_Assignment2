@@ -173,8 +173,6 @@ def fetchAndUpdateData():
     interval = datetime.combine(date.today(), datetime.now().time()) - datetime.combine(date.today(), df["just_date"].iloc[-1])
     cond = interval / pd.Timedelta('1 minute')
 
-    print(int(cond))
-
     if int(cond < 5):
         print("Everything is up to date!\n")
 

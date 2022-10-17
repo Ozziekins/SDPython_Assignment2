@@ -10,7 +10,7 @@ from threading import Thread
 import pandas as pd
 from urllib.request import Request, urlopen
 import shutup
-from src.Task2.Services import logger, error_logger
+from Services import logger, error_logger
 
 
 def aggregate_data(data):
