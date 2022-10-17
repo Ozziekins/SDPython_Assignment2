@@ -1,13 +1,8 @@
 from pathlib import Path
-import numpy as np
-import torch
 from sklearn.exceptions import NotFittedError
 from sklearn.linear_model import SGDRegressor
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler, PolynomialFeatures
-from torch import nn
-from torch.utils.data import DataLoader, TensorDataset
-from .NeuralNet import NeuralNet
+from sklearn.preprocessing import StandardScaler
 import joblib
 import os.path
 
