@@ -164,7 +164,12 @@ def nextSessionDuration(userID):
 
 
 def fetchAndUpdateData():
-    pass
+    df = pd.read_sql_query(f"""select * from public."LoadedDays";""", con=sqlProvider.engine)
+
+    df["fetch_date"] = pd.to_datetime(df["fetch_date"])
+    df["just_date"] = df["timestamp"].dt.date
+
+    if df["just_date"].iloc[-1] <
 
 
 def topFiveUsers():
