@@ -7,8 +7,7 @@ shutup.please()
 
 if __name__ == "__main__":
     th = Thread(target=get_data, daemon=True)
-
+    th.start()
     # function is running on the main thread
     begin()
-    th.start()
     th.join()
