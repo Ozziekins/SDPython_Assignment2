@@ -20,6 +20,12 @@ class EdInstitution:
         return self._klassrooms
 
     def get_room(self, number: str, auditorium: bool) -> Room:
+        """
+        Function to get a room from the university given a number
+        :param number: str; number of room to fetch
+        :param auditorium: bool; flag to choose from auditoriums or klassrooms
+        :return:
+        """
         room = None
         rooms = self._auditoriums if auditorium else self._klassrooms
         for r in rooms:
@@ -69,22 +75,6 @@ class EdInstitution:
 
         return rooms
 
-    def _available_krooms(self) -> int:
-        """
-        Helper function to get how many klassrooms are available in university
-        :return: int; number of available klassrooms
-        """
-        available = list(filter(lambda x: x.is_available(), self._klassrooms))
-        return len(available)
-
-    def _available_auds(self) -> int:
-        """
-        Helper function to get how many lectureAuditoriums are available in university
-        :return: int; number of available lectureAuditoriums
-        """
-        available = list(filter(lambda x: x.is_available(), self._auditoriums))
-        return len(available)
-
     def remove_kroom(self, number: str) -> None:
         """
         Removes a KlassRoom from the set of Klassrooms, using auditorium number.
@@ -100,6 +90,22 @@ class EdInstitution:
         :param number: str, number of LectureAuditoriums to remove
         """
         self._auditoriums = self._remove(number, self._auditoriums)
+
+    def _available_krooms(self) -> int:
+        """
+        Helper function to get how many klassrooms are available in university
+        :return: int; number of available klassrooms
+        """
+        available = list(filter(lambda x: x.is_available(), self._klassrooms))
+        return len(available)
+
+    def _available_auds(self) -> int:
+        """
+        Helper function to get how many lectureAuditoriums are available in university
+        :return: int; number of available lectureAuditoriums
+        """
+        available = list(filter(lambda x: x.is_available(), self._auditoriums))
+        return len(available)
 
     def save_to_file(self) -> None:
         """

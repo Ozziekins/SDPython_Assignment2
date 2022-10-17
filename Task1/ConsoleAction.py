@@ -27,7 +27,7 @@ class AddAuditorium(ConsoleAction):
             print("Enter (classroom - 1 or Auditorium - 2):")
             choice = int(input())
             if choice < 1 or choice > 2:
-                raise ValueError
+                raise ValueError("Incorrect choice. Please, try again")
             print("Enter (capacity, number, air conditioner- yes/no):")
             args = re.search("([1-9][0-9]+) ([0-9]+) (yes|no)", input())
             if not args:
@@ -48,12 +48,18 @@ class AddAuditorium(ConsoleAction):
         except (UniversityNotFoundException, ValueError) as error:
             print(error)
 
+    def __str__(self):
+        return "AddAuditorium"
+
 
 class AddActivityKlassRoom(ConsoleAction):
 
-    def execute(self, institutions):
+    def execute(self, institutions: list[EdInstitution]) -> None:
+        """
+        Adds an activity to a KlassRoom
+        :param institutions: list[EdInstitution] - list of Institutions
+        """
         try:
-
             print("Enter institution name :")
             inst = get_institution(institutions)
 
@@ -80,14 +86,20 @@ class AddActivityKlassRoom(ConsoleAction):
         except (ActivityOutOfRangeException, ActivitiesOverlapException, UniversityNotFoundException,
                 RoomNotFoundException) as ex:
             print(ex)
-        except(IndexError):
+        except IndexError:
             print("Incorrect input format. please try aagain.")
+
+    def __str__(self):
+        return "AddActivityKlassroom"
 
 
 class AddActivityAuditorium(ConsoleAction):
-    def execute(self, institutions):
+    def execute(self, institutions: list[EdInstitution]) -> None:
+        """
+        Adds an activity to an Auditorium
+        :param institutions: list[EdInstitution] - list of Institutions
+        """
         try:
-
             print("Enter institution name :")
             inst = get_institution(institutions)
 
@@ -110,13 +122,14 @@ class AddActivityAuditorium(ConsoleAction):
 
             print(f"Successfully added activity to Klassroom from {start_slot} to {finish_slot} ")
 
-
-
         except (ActivityOutOfRangeException, ActivitiesOverlapException, UniversityNotFoundException,
                 RoomNotFoundException) as ex:
             print(ex)
-        except(IndexError):
+        except IndexError:
             print("Incorrect input format. please try aagain.")
+
+    def __str__(self):
+        return "AddActivityAuditorium"
 
 
 class Dump(ConsoleAction):
@@ -137,7 +150,6 @@ class Dump(ConsoleAction):
             else:
                 print("Enter file name:")
                 name = str(input())
-                print(name)
                 with open(name, 'r') as file:
                     f = file.read()
                     i = jsonpickle.decode(f)
@@ -145,6 +157,9 @@ class Dump(ConsoleAction):
                     print(f'Successfully loaded institution {i.get_name()}!')
         except (ValueError, FileNotFoundError, Exception):
             print('Incorrect choice input. Please, try again!')
+
+    def __str__(self):
+        return "Dump"
 
 
 class PrintSummary(ConsoleAction):
@@ -155,6 +170,9 @@ class PrintSummary(ConsoleAction):
         """
         print_summary(institutions)
 
+    def __str__(self):
+        return "PrintSummary"
+
 
 class Exit(ConsoleAction):
     def execute(self, institutions: list[EdInstitution]) -> None:
@@ -164,3 +182,6 @@ class Exit(ConsoleAction):
         """
         print_summary(institutions)
         sys.exit()
+
+    def __str__(self):
+        return "Exit"
