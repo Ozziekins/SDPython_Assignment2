@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from .Models import Base, LoadedDay, AggregateEntry
+from Models import Base, LoadedDay, AggregateEntry
 
 
 class SqlProvider:

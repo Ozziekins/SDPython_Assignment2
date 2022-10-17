@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 from Services.Files import Files
 from SqlProvider import SqlProvider
 from sqlalchemy.orm import sessionmaker
-import pandas as pd
 from ML.DurationTrainer import DurationTrainer
 from Models import LoadedDay
 from time import perf_counter, sleep
@@ -11,6 +10,8 @@ from ML.stream_quality import QualityPredictor
 from threading import Thread
 import pandas as pd
 from urllib.request import Request, urlopen
+
+from src.Task2.Services import logger, error_logger
 
 
 def aggregate_data(data):
@@ -32,8 +33,10 @@ def aggregate_data(data):
     return aggregate_df
 
 
+@logger
+@error_logger
 def get_data():
-    interval = 60
+    interval = 300
     sql_provider = SqlProvider()
     sql_provider.create_tables()
     Session = sessionmaker(sql_provider.engine)
@@ -43,7 +46,7 @@ def get_data():
         if qry is not None:
             start_date = qry.file_date + timedelta(days=1)
         else:
-            start_date = datetime(2022, 9, 2)
+            start_date = datetime(2022, 9, 1)
         sim = Files(start_date)
         for file_date, file_id in sim:
             time_start = perf_counter()
