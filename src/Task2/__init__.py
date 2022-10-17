@@ -1,8 +1,8 @@
 from .SqlProvider import SqlProvider
-from .ML import DurationPredict, QualityPredictor
+from .ML import QualityPredictor, DurationTrainer
 
 __all__ = [
     "SqlProvider",
-    "DurationPredict",
-    "QualityPredictor"
+    "QualityPredictor",
+    "DurationTrainer"
 ]
