@@ -8,7 +8,7 @@ if __name__ == '__main__':
     klassRoom = Klassroom('KFU', '494', 120, True)
     klassRoom2 = Klassroom('KFU', '594', 120, True)
     activity = Activity("sas", '494', time.fromisoformat("10:30"), time.fromisoformat("11:30"))
-    activity2 = Activity("sas", '494', time.fromisoformat("10:30"), time.fromisoformat("11:30"))
+    activity2 = Activity("sas", '494', time.fromisoformat("14:30"), time.fromisoformat("15:30"))
     activity3 = Activity("sas", '494', time.fromisoformat("10:30"), time.fromisoformat("11:30"))
     auditorium.add_activity(activity)
     auditorium.add_activity(activity2)
