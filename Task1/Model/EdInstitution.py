@@ -118,4 +118,4 @@ class EdInstitution:
         return f'{self._name}' + \
                f'\n\tclassroom(s) : {len(self._klassrooms)}' + \
                f'\n\tAuditorium(s): {len(self._auditoriums)}' + \
-               f'\n\tStatus for today (now) : {self._available_krooms()} available classroom(s) and {self._available_auds()}'
+               f'\n\tStatus for today (now) : {self._available_krooms()} available classroom(s) and {self._available_auds()} available auditorium(s)'
